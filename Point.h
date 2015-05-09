@@ -8,6 +8,7 @@ public:
 	~Point();
 
 	int distance(const Point &P) const;	
+	int getValue();
 
 private:
 	int x;

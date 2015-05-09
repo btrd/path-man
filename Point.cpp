@@ -11,3 +11,7 @@ int Point::distance(const Point &P) const
 	int dy = this->y - P.y;
 	return sqrt(dx*dx + dy*dy);
 }
+
+int Point::getValue(){
+	return this->value;
+}
