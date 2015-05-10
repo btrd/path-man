@@ -8,6 +8,11 @@
 #include <stdio.h>
 #include <vector>
 
+/*
+	Class handling the differents ADN and reproduction
+	CAUTION: don't forget to initiate randomness with "srand(time(NULL));"
+			 before using any of the reproduction fonction.
+*/
 using namespace std;
 
 enum direction
@@ -27,23 +32,25 @@ Gene mkGene(int direct, int steps);
 class Genome
 {
 public:
+	Genome();
 	Genome(int size, int maxsteps, int mutationchance);
 	~Genome();
 
 	int getSize();
 
-	void Mutate(int nbgene); //TODO
+	void Mutate(int nbgene);
 	//For each gene, choose from father or mother randomly
-	Genome ChildRandom(Genome a, Genome b); //TODO
+	static Genome ChildRandom(Genome a, Genome b);
 	//Take the first Gene until p1 is reach then take second Gene
-	Genome ChildCrossOverOnePoint(Genome a, Genome b, int p1); //TODO
+	static Genome ChildCrossOverOnePoint(Genome a, Genome b, int p1); //TODO
 	//Take the first Gene until p1 is reach then take second Gene until p2 then p1 again
-	Genome ChildCrossOverTwoPoint(Genome a, Genome b, int p1, int p2); //TODO
+	static Genome ChildCrossOverTwoPoint(Genome a, Genome b, int p1, int p2); //TODO
 	//Take the first half of Gene a and second half of Gene b
-	Genome ChildCrossOverhalf(Genome a, Genome b); //TODO
-
+	static Genome ChildCrossOverhalf(Genome a, Genome b); //TODO
 	void PrintGenome();
 private:
+	//Return a Child of a and b with no adn
+	static Genome CleanChild(Genome a, Genome b);
 	int mutationchance; //chance of mutation of children in percent (0..100)
 	int maxsteps; //max of steps a gene can do.
 	int size;
