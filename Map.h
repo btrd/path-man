@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include "Point.h"
+#include "Genome.h"
 
 #include <vector>
 #include <iostream>
@@ -10,7 +11,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 using namespace std;
+
+enum direction
+{
+	NORTH, NORTH_EAST, EAST, SOUTH_EAST,
+	SOUTH, SOUTH_WEST, WEST, NORTH_WEST
+};
 
 class Map
 {
@@ -20,6 +28,8 @@ public:
 
 	void display();
 	Point* getStart();
+	Point* change(Point* p, int direct, int steps);
+	void displayWith(Point* p);
 
 private:
 	int n;

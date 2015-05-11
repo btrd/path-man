@@ -6,5 +6,13 @@ int main(int argc, char const *argv[])
 	Map *m = v->getMap();
 	m->display();
 
+	Person *p = v->getPersonTest();
+	cout << p->getLocation()->getX() << "\n";
+	cout << p->getLocation()->getY() << "\n";
+	for(int i=0; i<100;++i){
+		m->displayWith(p->getLocation());
+		v->iteration();
+	}
+
 	return 0;
 }

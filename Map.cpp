@@ -19,13 +19,17 @@ Map::Map()
 				int val = atoi(&c);
 				Point *p = new Point(i,j,val);
 				points.push_back(p);
-				if(val == 3)
-					end = p;
-				else if(val == 2)
-					start = p;
+				if(val == 3){
+					this->end = p;
+				}
+				else if(val == 2){
+					this->start = p;
+					cout << p->getX();
+					cout << p->getY() << "\n";
+				}
 			}
+			j++;
 		}
-		j++;
 		map.close();
 	}
 }
@@ -41,6 +45,64 @@ void Map::display(){
 
 Point* Map::getStart(){
 	return this->start;
+}
+
+Point* Map::change(Point* p, int direct, int steps){
+	int x = p->getX();
+	int y = p->getY();
+	Point* res = p;
+
+	for(int i=0;i<steps;i++){
+		switch(direct)
+		{
+			case NORTH:
+				--y;
+				break;
+			case NORTH_EAST:
+				--y;
+				++x;
+				break;
+			case EAST:
+				++x;
+				break;
+			case SOUTH_EAST:
+				++y;
+				++x;
+				break;
+			case SOUTH:
+				++y;
+				break;
+			case SOUTH_WEST:
+				++y;
+				--x;
+				break;
+			case WEST:
+				--x;
+				break;
+			case NORTH_WEST:
+				--y;
+				--x;
+				break;
+		}
+
+		res = this->points.at(x+y*n);
+		if(res->getValue() == 1 || res->getValue() == 3)
+			i=steps;
+	}
+
+	return this->points.at(x+y*n);
+}
+
+void Map::displayWith(Point* p){
+	for(int i=0;i<m;++i){
+		for(int j=0;j<n;++j){
+			if(i == p->getY() && j == p->getX())
+				cout << "*";
+			else
+				cout << points.at(i*n+j)->getValue();
+		}
+		cout << "\n";
+	}
 }
 
 

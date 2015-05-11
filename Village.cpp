@@ -16,3 +16,17 @@ Village::Village(int id, int population)
 Map* Village::getMap(){
 	return this->map;
 }
+
+Person* Village::getPersonTest(){
+	Person* p = this->people.at(0);
+	p->getGenome()->PrintGenome();
+	return p;
+}
+
+int Village::iteration(){
+	for(int i=0;i<population;++i){
+		this->people.at(i)->move(this->map);
+	}
+
+	return 1;
+}

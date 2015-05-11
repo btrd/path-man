@@ -3,6 +3,7 @@
 
 #include "Genome.h"
 #include "Point.h"
+#include "Map.h"
 
 class Person
 {
@@ -10,11 +11,17 @@ public:
 	Person(int id, Genome* genome, Point* location);
 	~Person();
 
+	int move(Map* m);
+	Genome* getGenome();
+	Point* getLocation();
+
 private:
 	int id;
 	Genome* genome;
-	bool state;
+	bool alive;
 	Point* location;
+	int iteration;
+	bool arrived;
 };
 
 #endif

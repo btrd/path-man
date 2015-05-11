@@ -9,6 +9,8 @@ public:
 
 	int distance(const Point &P) const;	
 	int getValue();
+	int getY();
+	int getX();
 
 private:
 	int x;

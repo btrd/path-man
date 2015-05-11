@@ -24,7 +24,7 @@ Genome::Genome(int size, int maxsteps, int mutationchance)
 	}
 }
 
-Genome(int size, int maxsteps, int mutationchance, int direction)
+Genome::Genome(int size, int maxsteps, int mutationchance, int direction)
 {
 	int i, direct, steps;
 	this->maxsteps = maxsteps;

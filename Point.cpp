@@ -15,3 +15,11 @@ int Point::distance(const Point &P) const
 int Point::getValue(){
 	return this->value;
 }
+
+int Point::getX(){
+	return this->x;
+}
+
+int Point::getY(){
+	return this->y;
+}

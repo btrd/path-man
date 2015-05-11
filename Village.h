@@ -12,6 +12,8 @@ public:
 	~Village();
 
 	Map* getMap();
+	int iteration();
+	Person* getPersonTest();
 private:
 	int id;
 	int population;
