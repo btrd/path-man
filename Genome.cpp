@@ -24,11 +24,30 @@ Genome::Genome(int size, int maxsteps, int mutationchance)
 	}
 }
 
+Genome(int size, int maxsteps, int mutationchance, int direction)
+{
+	int i, direct, steps;
+	this->maxsteps = maxsteps;
+	this->size = size;
+	this->mutationchance = mutationchance;
+	for (i = 0 ; i < size; i++)
+	{
+		direct = direction;
+		steps = (rand() % this->maxsteps) + 1;
+		adn.push_back(mkGene(direct, steps));
+	}
+}
+
 Genome::~Genome() {}
 
 int Genome::getSize()
 {
 	return this->size;
+}
+
+vector<Gene> Genome::getAdn()
+{
+	return this->adn;
 }
 
 void Genome::PrintGenome()
