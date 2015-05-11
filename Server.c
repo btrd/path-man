@@ -1,30 +1,56 @@
 #include "include.h"
 
-// Never shuffle the same village
-// static int positionPopInPops(population *p) {
-//   int res = -1;
-//   for (int i = 0; i < populations.size(); ++i) {
-//     if (v->getId() == populations.at(i).getId()) {
-//       res = i;
-//     }
-//   }
-//   return res;
-// }
+int populations_size = 0;
+struct population_struct populations[100];
+int init = 0;
 
-population last_population = void;
-population * shuffle(population *p) {
-  static population res = *p;
-  if(last_population == void) {
-    return *p;
+// Never shuffle the same village
+int replacePopInPops(struct population_struct *p) {
+  int res = -1;
+  for (int i = 0; i < populations_size; ++i) {
+    if (p->id == populations[i].id) {
+      res = i;
+      populations[i] = *p;
+    }
+  }
+  if (res == -1) {
+    populations[populations_size] = *p;
+    res = populations_size;
+    populations_size++;
+  }
+  return res;
+}
+
+struct population_struct * shuffle(struct population_struct *p) {
+  static struct population_struct res;
+  res.tab = (int *)malloc(sizeof(int)*p->size*2);
+  for(int i = 0; i < p->size * 2; i++) {
+    res.tab[i] = i+10;
+  }
+  res.id = p->id;
+  res.size = p->size;
+  int current_i = replacePopInPops(p);
+  if(init == 0) {
+    init = 1;
+    return p;
+  }
+  int next_i;
+  if (current_i < populations_size-1) {
+    next_i = current_i + 1;
+  } else {
+    next_i = 0;
   }
   //Mélange last_population et p
-  for (int i = 0; i < p->s/2; i++) {
-    res[i] = last_population[i];
+  for (int i = 0; i < (p->size/2)-1; i++) {
+    res.tab[i] = p->tab[i];
+    i++;
+    res.tab[i] = p->tab[i];
   }
-  for (int i = p->s/2; i < p->s; i++) {
-    res[i] = p[i];
+  for (int i = (p->size/2)-1; i < p->size; i++) {
+    res.tab[i] = populations[next_i].tab[i];
+    i++;
+    res.tab[i] = populations[next_i].tab[i];
   }
-  last_population = *p;
   return &res;
 }
 

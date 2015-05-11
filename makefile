@@ -1,17 +1,16 @@
-CC=g++
-CFLAGS=-c -Wall
-LDFLAGS=
-SOURCES=Map.cpp Point.cpp Person.cpp Village.cpp Genome.cpp Client.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=test
+CC=gcc
+CFLAGS=-Wall -g
+#----------------------------------------------
+all : Server Client 
+#----------------------------------------------
+Server : Server.o xdr_population.o
+	gcc -o Server Server.o xdr_population.o
+#----------------------------------------------
+Client : Client.o xdr_population.o
+	gcc -o Client Client.o xdr_population.o
+#----------------------------------------------
+%.o : %.c
+	gcc -o $@ $(CFLAGS) -c $^
 
-all: $(SOURCES) $(EXECUTABLE)
-	
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
-
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
-
-clean:
-	rm -f a.out ${EXECUTABLE}
+clean :
+	/bin/rm -f *.o Server Client *~ core* pok* *.ps

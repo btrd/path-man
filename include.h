@@ -8,15 +8,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include "population_struct.h"
 #define PROGNUM 0x20000100
 #define VERSNUM 1
 #define PROCNUM 1
-bool_t xdr_village(XDR *, Village *);
-
-struct population {
-  int size;
-  int **tab;
-  int id;
-};
-
+bool_t xdr_population(XDR *, struct population_struct *);
 #endif /* INCRPC */
