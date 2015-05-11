@@ -105,6 +105,9 @@ void Map::displayWith(Point* p){
 	}
 }
 
+vector<Point*> Map::getPoints(){
+	return this->points;
+}
 
 // int main(int argc, char const *argv[])
 // {

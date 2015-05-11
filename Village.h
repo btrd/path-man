@@ -14,6 +14,7 @@ public:
 	Map* getMap();
 	int iteration();
 	Person* getPersonTest();
+	vector<Person*> getPeople();
 private:
 	int id;
 	int population;

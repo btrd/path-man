@@ -23,6 +23,10 @@ Person* Village::getPersonTest(){
 	return p;
 }
 
+vector<Person*> Village::getPeople(){
+	return this->people;
+}
+
 int Village::iteration(){
 	for(int i=0;i<population;++i){
 		this->people.at(i)->move(this->map);
