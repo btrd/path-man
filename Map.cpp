@@ -16,7 +16,13 @@ Map::Map()
 		while(getline(map, line)){
 			for(string::size_type i = 0; i < line.size(); ++i){
 				char c = line[i];
-				points.push_back(new Point(i, j, atoi(&c)));
+				int val = atoi(&c);
+				Point *p = new Point(i,j,val);
+				points.push_back(p);
+				if(val == 3)
+					end = p;
+				else if(val == 2)
+					start = p;
 			}
 		}
 		j++;
@@ -31,6 +37,10 @@ void Map::display(){
 		}
 		cout << "\n";
 	}
+}
+
+Point* Map::getStart(){
+	return this->start;
 }
 
 

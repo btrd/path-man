@@ -19,6 +19,7 @@ public:
 	~Map();
 
 	void display();
+	Point* getStart();
 
 private:
 	int n;

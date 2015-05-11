@@ -146,15 +146,15 @@ Genome Genome::ChildCrossOverhalf(Genome a, Genome b)
 }
 
 //For test purpose
-int main()
-{
-	srand(time(NULL));
-	int SIZE = 10;
-	int MAXSTEPS = 5;
-	Genome g1 = Genome(SIZE,MAXSTEPS, 20);
-	Genome g2 = Genome(SIZE,MAXSTEPS, 10);
-	g1.PrintGenome();
-	g2.PrintGenome();
-	Genome g3 = Genome::ChildCrossOverhalf(g1, g2);
-	g3.PrintGenome();
-}
+// int main()
+// {
+// 	srand(time(NULL));
+// 	int SIZE = 10;
+// 	int MAXSTEPS = 5;
+// 	Genome g1 = Genome(SIZE,MAXSTEPS, 20);
+// 	Genome g2 = Genome(SIZE,MAXSTEPS, 10);
+// 	g1.PrintGenome();
+// 	g2.PrintGenome();
+// 	Genome g3 = Genome::ChildCrossOverhalf(g1, g2);
+// 	g3.PrintGenome();
+// }
