@@ -63,6 +63,20 @@ void Genome::PrintGenome()
 	cout << "----------" << endl;
 }
 
+int ** Genome::toArrays()
+{
+	int i;
+	int ** res = 0;
+	res = new int*[this->size];
+	for (i = 0; i < this->size; i++)
+	{
+		res[i] = new int[2];
+		res[i][0] = this->adn.at(i).direct;
+		res[i][1] = this->adn.at(i).steps;
+	}
+	return res;
+}
+
 void Genome::Mutate(int nbgene)
 {
 	int i=0, j = 0;
@@ -146,15 +160,16 @@ Genome Genome::ChildCrossOverhalf(Genome a, Genome b)
 }
 
 //For test purpose
-// int main()
-// {
-// 	srand(time(NULL));
-// 	int SIZE = 10;
-// 	int MAXSTEPS = 5;
-// 	Genome g1 = Genome(SIZE,MAXSTEPS, 20);
-// 	Genome g2 = Genome(SIZE,MAXSTEPS, 10);
-// 	g1.PrintGenome();
-// 	g2.PrintGenome();
-// 	Genome g3 = Genome::ChildCrossOverhalf(g1, g2);
-// 	g3.PrintGenome();
-// }
+/*
+int main()
+{
+	srand(time(NULL));
+	int SIZE = 10;
+ 	int MAXSTEPS = 5;
+ 	Genome g1 = Genome(SIZE,MAXSTEPS, 20);
+ 	Genome g2 = Genome(SIZE,MAXSTEPS, 10);
+ 	g1.PrintGenome();
+ 	g2.PrintGenome();
+ 	Genome g3 = Genome::ChildCrossOverhalf(g1, g2);
+ 	g3.PrintGenome();
+}*/
