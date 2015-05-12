@@ -32,6 +32,43 @@ Map::Map()
 		}
 		map.close();
 	}
+
+	// int seed = 1002;
+	// int val = 0;
+	// srand(seed++);
+	// int rd_start = rand()%(n*m);
+	// srand(seed++);
+	// int rd_end = rand()%(n*m);
+	// srand(seed++);
+	// int size = 5;
+	// int rd_x = rand()%n;
+	// int rd_y = rand()%m;
+
+	// cout << rd_start << " " << rd_end << "\n";
+
+	// for(int i=0;i<m;++i){
+	// 	for(int j=0;j<n;++j){
+	// 		if(i == 0 || i == m-1 || j == 0 || j == n-1)
+	// 			val = 1;
+	// 		else
+	// 			val = 0;
+
+	// 		if(i == rd_y && j == rd_x){
+	// 			val = 1;
+	// 		}
+	// 		else if(i >= rd_y && i <= rd_y+size && j >= rd_x && j <= rd_x+size)
+	// 			val = 1;
+
+	// 		if(i*n+j == rd_start)
+	// 			val = 2;
+	// 		else if(i*n+j == rd_end)
+	// 			val = 3;
+
+
+	// 		Point *p = new Point(j,i,val);
+	// 		points.push_back(p);
+	// 	}
+	// }
 }
 
 void Map::display(){
