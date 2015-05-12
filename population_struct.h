@@ -1,5 +1,10 @@
 struct population_struct {
   int size;
-  int *tab;
+  struct adn_struct *tab;
   int id;
+};
+
+struct adn_struct {
+  int size;
+  int *tab;
 };

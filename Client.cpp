@@ -1,10 +1,20 @@
 #include "Village.h"
+#include "Client.c"
 
-int main(int argc, char const *argv[])
-{
+extern "C" struct population_struct call_rpc(struct population_struct);
+
+int main(int argc, char const *argv[]) {
 	Village *v = new Village(1, 100);
+	struct population_struct pop = v.getPopulationStruct();
+	struct population_struct new_pop = call_rpc(pop);
+	v.setPopulationStruct(new_pop);
+	showMap(map);
+	return 0;
+}
+
+void showMap(Village *v) {
 	Map *map = v->getMap();
-	//map->display();
+	map->display();
 
 	Person *p = v->getPersonTest();
 	cout << p->getLocation()->getX() << "\n";
