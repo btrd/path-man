@@ -34,7 +34,7 @@ public:
 	int getSize();
 	vector<Gene> getAdn();
 
-	int ** toArrays();
+	int * toArrays();
 	void Mutate(int nbgene);
 	//For each gene, choose from father or mother randomly
 	static Genome ChildRandom(Genome a, Genome b);
