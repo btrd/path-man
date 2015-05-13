@@ -4,6 +4,7 @@
 #include <vector>
 #include "Person.h"
 #include "Map.h"
+#include "population_struct.h"
 
 class Village
 {

@@ -1,16 +1,21 @@
 CC=gcc
+CXX=g++
 CFLAGS=-Wall -g -std=c99
-#----------------------------------------------
-all : Server Client 
-#----------------------------------------------
+CXXFLAGS=-Wall -g
+SOURCES=Map.cpp Point.cpp Person.cpp Village.cpp Genome.cpp Client.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXEC=Server Client
+
+all : $(EXEC)
+
 Server : Server.o xdr_population.o
-	gcc -o Server Server.o xdr_population.o
-#----------------------------------------------
-Client : Client.o xdr_population.o
-	gcc -o Client Client.o xdr_population.o
-#----------------------------------------------
-%.o : %.c
-	gcc -o $@ $(CFLAGS) -c $^
+	$(CC) -o $@ Server.o xdr_population.o
+
+Client : $(OBJECTS)
+	$(CXX) -o $@ $(OBJECTS)
+
+%.o: %.c
+	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 clean :
-	/bin/rm -f *.o Server Client *~ core* pok* *.ps
+	rm -f a.out ${EXECUTABLE}
