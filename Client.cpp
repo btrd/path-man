@@ -8,7 +8,6 @@ int main(int argc, char const *argv[]) {
 	struct population_struct pop = v.getPopulationStruct();
 	struct population_struct new_pop = call_rpc(pop);
 	v.setPopulationStruct(new_pop);
-	showMap(map);
 	return 0;
 }
 

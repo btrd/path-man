@@ -2,18 +2,32 @@
 
 int populations_size = 0;
 struct population_struct *populations;
-
+int adn_size = 0;
 // Never shuffle the same village
 int replacePopInPops(struct population_struct *p) {
   int res = -1;
-  for (int i = 0; i < populations_size; ++i) {
-    if (p->id == populations[i].id) {
-      res = i;
-      populations[i] = *p;
+  for (int g = 0; g < populations_size; g++) {
+    if (p->id == populations[g].id) {
+      res = g;
+      populations[g].size = p->size;
+      for (int k = 0; k < p->size; k++) {
+        populations[g].tab[k].size = adn_size;
+        for (int j = 0; j < adn_size * 2; j++) {
+          populations[g].tab[k].tab[j] =  p->tab[k].tab[j];
+        }
+      }
     }
   }
   if (res == -1) {
-    populations[populations_size] = *p;
+    populations[populations_size].size = p->size;
+    populations[populations_size].id = p->id;
+    populations[populations_size].tab = (struct adn_struct *)malloc(sizeof(struct adn_struct)*p->size);
+    for (int k = 0; k < p->size; k++) {
+      populations[populations_size].tab[k].tab = (int *)malloc(sizeof(int)*adn_size*2);
+      for (int j = 0; j < adn_size * 2; j++) {
+        populations[populations_size].tab[k].tab[j] =  p->tab[k].tab[j];
+      }
+    }
     res = populations_size;
     populations_size++;
   }
@@ -21,24 +35,16 @@ int replacePopInPops(struct population_struct *p) {
 }
 
 struct population_struct * shuffle(struct population_struct *p) {
-  printf("1\n");
-  int adn_size = p->tab[0].size;
+  adn_size = p->tab[0].size;
   static struct population_struct res;
-  res.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct) * res.size);
-  printf("RES_SIZE: %d\n", res.size);
-  for(int i = 0; i < res.size; i++) {
-    struct adn_struct *adn = &res.tab[i];
-    adn->size = adn_size;
-    printf("ADN_SIZE: %d\n", (adn->size * 2));
-    adn->tab = (int *)malloc(sizeof(int) * adn->size * 2);
-    for (int j = 0; j < adn->size * 2; j++) {
-      adn->tab[j] = p->tab[i].tab[j];
-    }
-  }
-  printf("2\n");
-
   res.id = p->id;
   res.size = p->size;
+  res.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct) * res.size);
+  for(int i = 0; i < res.size; i++) {
+    res.tab[i].size = adn_size;
+    res.tab[i].tab = (int *)malloc(sizeof(int) * adn_size * 2);
+  }
+
   int current_i = replacePopInPops(p);
   if(populations_size <= 1) {
     return p;
@@ -49,17 +55,19 @@ struct population_struct * shuffle(struct population_struct *p) {
   } else {
     next_i = current_i + 1;
   }
-  printf("3\n");
-  //Mélange last_population et p
-  for (int i = 0; i < (p->size/2)-1; i++) {
-    res.tab[i] = populations[current_i].tab[i];
 
+  for (int i = 0; i < p->size/2; i++) {
+    for (int j = 0; j < adn_size * 2; j++) {
+      res.tab[i].tab[j] = populations[current_i].tab[i].tab[j];
+    }
   }
-  printf("4\n");
-  for (int i = (p->size/2)-1; i < p->size; i++) {
-    res.tab[i] = populations[next_i].tab[i];
+
+  for (int i = p->size/2; i < p->size; i++) {
+    for (int j = 0; j < adn_size * 2; j++) {
+      res.tab[i].tab[j] = populations[next_i].tab[i].tab[j];
+    }
   }
-  printf("5\n");
+  
   return &res;
 }
 
