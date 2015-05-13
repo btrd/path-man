@@ -7,7 +7,7 @@ public:
 	Point(int x, int y, int value);
 	~Point();
 
-	int distance(const Point &P) const;	
+	int distance(Point *p);	
 	int getValue();
 	int getY();
 	int getX();

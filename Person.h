@@ -14,6 +14,8 @@ public:
 	int move(Map* m);
 	Genome* getGenome();
 	Point* getLocation();
+	bool getArrived();
+	int getPositionGenome();
 
 private:
 	int id;

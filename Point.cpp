@@ -5,10 +5,10 @@
 Point::Point(int x, int y, int value) : x(x), y(y), value(value)
 {}
 
-int Point::distance(const Point &P) const
+int Point::distance(Point *p)
 {
-	int dx = this->x - P.x;
-	int dy = this->y - P.y;
+	int dx = this->x - p->x;
+	int dy = this->y - p->y;
 	return sqrt(dx*dx + dy*dy);
 }
 

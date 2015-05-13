@@ -27,3 +27,11 @@ Genome* Person::getGenome(){
 Point* Person::getLocation(){
 	return this->location;
 }
+
+bool Person::getArrived(){
+	return this->arrived;
+}
+
+int Person::getPositionGenome(){
+	return this->iteration;
+}
