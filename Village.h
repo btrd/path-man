@@ -15,6 +15,7 @@ public:
 	int iteration();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
+	struct population_struct getPopulationStruct();
 private:
 	int id;
 	int population;
