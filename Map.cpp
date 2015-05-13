@@ -24,8 +24,6 @@ Map::Map()
 				}
 				else if(val == 2){
 					this->start = p;
-					cout << p->getX();
-					cout << p->getY() << "\n";
 				}
 			}
 			j++;
