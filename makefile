@@ -1,6 +1,6 @@
 CC=gcc
 CXX=g++
-CFLAGS=-Wall -g -lrpcsvc
+CFLAGS=-Wall -g -lrpcsvc -std=c99
 CXXFLAGS=-Wall -g
 SOURCES=Map.cpp Point.cpp Person.cpp Village.cpp Genome.cpp Client.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
