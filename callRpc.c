@@ -1,7 +1,6 @@
 #include "include.h"
 
 struct population_struct call_rpc(struct population_struct p) {
-//int main(int argc, char **argv) {
   struct population_struct res;
   struct population_struct p;
   p.size = 2;

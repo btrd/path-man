@@ -1,13 +1,14 @@
 #include "Village.h"
-#include "Client.c"
+#include "callRpc.h"
+#include "population_struct.h"
 
 extern "C" struct population_struct call_rpc(struct population_struct);
 
 int main(int argc, char const *argv[]) {
 	Village *v = new Village(1, 100);
-	struct population_struct pop = v.getPopulationStruct();
+	struct population_struct pop = v->getPopulationStruct();
 	struct population_struct new_pop = call_rpc(pop);
-	v.setPopulationStruct(new_pop);
+	// v->setPopulationStruct(new_pop);
 	return 0;
 }
 
@@ -45,6 +46,4 @@ void showMap(Village *v) {
 
 		v->iteration();
 	}
-
-	return 0;
 }

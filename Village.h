@@ -4,7 +4,7 @@
 #include <vector>
 #include "Person.h"
 #include "Map.h"
-#include "Genome.h"
+#include "population_struct.h"
 
 class Village
 {
@@ -16,7 +16,7 @@ public:
 	int iteration();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
-	//struct population_struct getPopulationStruct();
+	struct population_struct getPopulationStruct();
 	void reproduce();
 	void evaluate();
 	void kill();

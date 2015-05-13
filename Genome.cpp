@@ -66,7 +66,7 @@ void Genome::PrintGenome()
 int * Genome::toArrays()
 {
 	int i;
-	int * res = new int*[this->size];
+	int * res = new int[this->size];
 	for (i = 0; i < this->size*2; i++)
 	{
 		res[i] = this->adn.at(i).direct;
