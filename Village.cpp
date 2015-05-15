@@ -56,48 +56,49 @@ struct population_struct Village::getPopulationStruct() {
   return res;
 }
 
-// void Village::reproduce(){
-// 	this->ranking.clear();
-// 	int pop = this->population;
-// 	srand(time(NULL));
-// 	int pt1 = rand()%100;
-// 	int pt2 = pt1+rand()%(100-pt1);
-// 	Genome *g;
-// 	for(int i=0;i<pop;i=i+2){
-// 		if(this->id%4 == 0)
-// 			g = Genome::ChildRandom(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
-// 		else if(this->id%4 == 1)
-// 			g = Genome::ChildCrossOverOnePoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1);
-// 		else if(this->id%4 == 2)
-// 			g = Genome::ChildCrossOverTwoPoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1, pt2);
-// 		else
-// 			g = Genome::ChildCrossOverhalf(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
+void Village::reproduce(){
+	this->ranking.clear();
+	int pop = this->population;
+	srand(time(NULL));
+	int pt1 = rand()%100;
+	int pt2 = pt1+rand()%(100-pt1);
+	Genome *g;
+	for(int i=0;i<pop;i=i+2){
+		if(this->id%4 == 0)
+			g = Genome::ChildRandom(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
+		else if(this->id%4 == 1)
+			g = Genome::ChildCrossOverOnePoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1);
+		else if(this->id%4 == 2)
+			g = Genome::ChildCrossOverTwoPoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1, pt2);
+		else
+			g = Genome::ChildCrossOverhalf(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
 
-// 		Person *p = new Person(this->population, g, this->map->getStart());
-// 		this->people.push_back(p);
-// 		this->population++;
-// 	}
-// }
+		Person *p = new Person(this->population, g, this->map->getStart());
+		this->people.push_back(p);
+		this->population++;
+	}
+}
 
-// void Village::evaluate(){
-// 	int note = 0;
-// 	Person *p;
-// 	for(int i=0;i<this->population;++i){
-// 		p = this->people.at(i);
-// 		note = -(p->getLocation()->distance(this->map->getStart()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()); 
-// 		this->ranking.push_back(make_pair(i, note));
-// 	}
+void Village::evaluate(){
+	int note = 0;
+	Person *p;
+	for(int i=0;i<this->population;++i){
+		p = this->people.at(i);
+		note = -(p->getLocation()->distance(this->map->getStart()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived())); 
+		this->ranking.push_back(make_pair(i, note));
+	}
 
-// 	sort(this->ranking.begin(), this->ranking.end(), this->pairCompare);	
-// }
+	std::sort(this->ranking.begin(), this->ranking.end(), pairCompare);	
+}
 
-// void Village::kill(){
-// 	int i = this->population*66/100;
-// 	int pop = this->population;
-// 	for(i; i<pop; ++i){
-// 		this->people.erase(this->ranking.at(i).first);
-// 	}
-// }
+void Village::kill(){
+	int pop = this->population;
+	for(int i=pop*66/100; i<pop; ++i){
+		this->people.erase(this->people.begin()+this->ranking.at(i).first);
+		this->population--;
+	}
+}
 
-// bool Village::pairCompare(const std::pair<int, int>& firstElem, const std::pair<int, int>& secondElem){
-//   return firstElem.second < secondElem.second;
+static bool pairCompare(const std::pair<int, int>& firstElem, const std::pair<int, int>& secondElem){
+  return firstElem.second < secondElem.second;
+}

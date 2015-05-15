@@ -32,6 +32,6 @@ bool Person::getArrived(){
 	return this->arrived;
 }
 
-int Person::getPositionGenome(){
+int Person::getGenomePosition(){
 	return this->iteration;
 }

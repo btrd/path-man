@@ -15,7 +15,7 @@ public:
 	Genome* getGenome();
 	Point* getLocation();
 	bool getArrived();
-	int getPositionGenome();
+	int getGenomePosition();
 
 private:
 	int id;
