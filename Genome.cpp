@@ -96,66 +96,67 @@ void Genome::Mutate(int nbgene)
 
 }
 
-Genome Genome::ChildRandom(Genome a, Genome b)
+Genome * Genome::ChildRandom(Genome * a, Genome * b)
 {
 	int i;
-	Genome res = CleanChild(a,b);
-	for (i=0; i<a.size; i++)
+	Genome * res = CleanChild(a,b);
+	for (i=0; i<a->size; i++)
 	{
 		if (rand() % 2)
-			res.adn.push_back(a.adn.at(i));
+			res->adn.push_back(a->adn.at(i));
 		else
-			res.adn.push_back(b.adn.at(i));
+			res->adn.push_back(b->adn.at(i));
 	}
-	if (rand() < res.mutationchance) //Mutation on creation
-		res.Mutate(5);
+	if (rand() < res->mutationchance) //Mutation on creation
+		res->Mutate(5);
 	return res;
 }
 
-Genome Genome::CleanChild(Genome a, Genome b)
+Genome * Genome::CleanChild(Genome * a, Genome * b)
 {
-	int newmaxsteps = (a.maxsteps + b.maxsteps)/2;
-	int newprobamutation = (a.mutationchance + b.mutationchance)/2;
-	Genome res = Genome(a.size, newmaxsteps, newprobamutation);
-	res.adn.clear();
+	int newmaxsteps = (a->maxsteps + b->maxsteps)/2;
+	int newprobamutation = (a->mutationchance + b->mutationchance)/2;
+	Genome tmp = Genome(a->size, newmaxsteps, newprobamutation);
+	Genome * res = &tmp;
+	res->adn.clear();
 	return res;
 }
 
-Genome Genome::ChildCrossOverOnePoint(Genome a, Genome b, int p1)
+Genome * Genome::ChildCrossOverOnePoint(Genome * a, Genome * b, int p1)
 {
 	int i;
-	Genome res = CleanChild(a,b);
-	for (i=0; i<a.size; i++)
+	Genome * res = CleanChild(a,b);
+	for (i=0; i<a->size; i++)
 	{
 		if (i < p1)
-			res.adn.push_back(a.adn.at(i));
+			res->adn.push_back(a->adn.at(i));
 		else
-			res.adn.push_back(b.adn.at(i));
+			res->adn.push_back(b->adn.at(i));
 	}
-	if (rand() < res.mutationchance) //Mutation on creation
-		res.Mutate(5);
+	if (rand() < res->mutationchance) //Mutation on creation
+		res->Mutate(5);
 	return res;
 }
 
-Genome Genome::ChildCrossOverTwoPoint(Genome a, Genome b, int p1, int p2)
+Genome * Genome::ChildCrossOverTwoPoint(Genome * a, Genome * b, int p1, int p2)
 {
 	int i;
-	Genome res = CleanChild(a,b);
-	for (i=0; i<a.size; i++)
+	Genome * res = CleanChild(a,b);
+	for (i=0; i<a->size; i++)
 	{
 		if (i < p1 || i > p2)
-			res.adn.push_back(a.adn.at(i));
+			res->adn.push_back(a->adn.at(i));
 		else
-			res.adn.push_back(b.adn.at(i));
+			res->adn.push_back(b->adn.at(i));
 	}
-	if (rand() < res.mutationchance) //Mutation on creation
-		res.Mutate(5);
+	if (rand() < res->mutationchance) //Mutation on creation
+		res->Mutate(5);
 	return res;
 }
 
-Genome Genome::ChildCrossOverhalf(Genome a, Genome b)
+Genome * Genome::ChildCrossOverhalf(Genome * a, Genome * b)
 {
-	return Genome::ChildCrossOverOnePoint(a,b, a.size/2);
+	return Genome::ChildCrossOverOnePoint(a,b, a->size/2);
 }
 
 //For test purpose

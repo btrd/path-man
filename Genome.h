@@ -37,17 +37,17 @@ public:
 	int * toArrays();
 	void Mutate(int nbgene);
 	//For each gene, choose from father or mother randomly
-	static Genome ChildRandom(Genome a, Genome b);
+	static Genome * ChildRandom(Genome * a, Genome * b);
 	//Take the first Gene until p1 is reach then take second Gene
-	static Genome ChildCrossOverOnePoint(Genome a, Genome b, int p1); //TODO
+	static Genome * ChildCrossOverOnePoint(Genome * a, Genome * b, int p1); //TODO
 	//Take the first Gene until p1 is reach then take second Gene until p2 then p1 again
-	static Genome ChildCrossOverTwoPoint(Genome a, Genome b, int p1, int p2); //TODO
+	static Genome * ChildCrossOverTwoPoint(Genome * a, Genome * b, int p1, int p2); //TODO
 	//Take the first half of Gene a and second half of Gene b
-	static Genome ChildCrossOverhalf(Genome a, Genome b); //TODO
+	static Genome * ChildCrossOverhalf(Genome * a, Genome * b); //TODO
 	void PrintGenome();
 private:
 	//Return a Child of a and b with no adn
-	static Genome CleanChild(Genome a, Genome b);
+	static Genome * CleanChild(Genome * a, Genome * b);
 	int mutationchance; //chance of mutation of children in percent (0..100)
 	int maxsteps; //max of steps a gene can do.
 	int size;
