@@ -116,8 +116,7 @@ Genome * Genome::CleanChild(Genome * a, Genome * b)
 {
 	int newmaxsteps = (a->maxsteps + b->maxsteps)/2;
 	int newprobamutation = (a->mutationchance + b->mutationchance)/2;
-	Genome tmp = Genome(a->size, newmaxsteps, newprobamutation);
-	Genome * res = &tmp;
+	Genome *res = new Genome(a->size, newmaxsteps, newprobamutation);
 	res->adn.clear();
 	return res;
 }
