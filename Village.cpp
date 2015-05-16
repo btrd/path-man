@@ -10,10 +10,10 @@ Village::Village(int id, int population)
 	for(int i=0;i<population;++i){
 		Genome *g = new Genome(100, 2, 50);
 		Person *p = new Person(i, g, this->map->getStart());
-		this->people.push_back(p);
+		this->people.push_back(make_pair(p, 0));
 	}
 
-	//this->reproduce();
+	this->reproduce();
 }
 
 Map* Village::getMap(){
@@ -21,18 +21,22 @@ Map* Village::getMap(){
 }
 
 Person* Village::getPersonTest(){
-	Person* p = this->people.at(0);
+	Person* p = this->people.at(0).first;
 	p->getGenome()->PrintGenome();
 	return p;
 }
 
-vector<Person*> Village::getPeople(){
-	return this->people;
+std::vector<Person*> Village::getPeople(){
+	std::vector<Person*> p;
+	for(int i=0;i<this->population;++i){
+		p.push_back(this->people.at(i).first);
+	}
+	return p;
 }
 
 int Village::iteration(){
 	for(int i=0;i<population;++i){
-		this->people.at(i)->move(this->map);
+		this->people.at(i).first->move(this->map);
 	}
 
 	return 1;
@@ -44,7 +48,7 @@ struct population_struct Village::getPopulationStruct() {
 	res.size = this->population;
   res.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct) * res.size);
   for(int i = 0; i < res.size; i++) {
-  	vector<Gene> adn = this->people[i]->getGenome()->getAdn();
+  	vector<Gene> adn = this->people.at(i).first->getGenome()->getAdn();
     res.tab[i].size = adn.size();
     res.tab[i].tab = (int *)malloc(sizeof(int) * adn.size() * 2);
     int k = -1;
@@ -57,24 +61,24 @@ struct population_struct Village::getPopulationStruct() {
 }
 
 void Village::reproduce(){
-	this->ranking.clear();
 	int pop = this->population;
 	srand(time(NULL));
 	int pt1 = rand()%100;
 	int pt2 = pt1+rand()%(100-pt1);
 	Genome *g;
 	for(int i=0;i<pop;i=i+2){
-		if(this->id%4 == 0)
-			g = Genome::ChildRandom(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
-		else if(this->id%4 == 1)
-			g = Genome::ChildCrossOverOnePoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1);
-		else if(this->id%4 == 2)
-			g = Genome::ChildCrossOverTwoPoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1, pt2);
-		else
-			g = Genome::ChildCrossOverhalf(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
+		// if(this->id%4 == 0)
+		// 	g = Genome::ChildRandom(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
+		// else if(this->id%4 == 1)
+		// 	g = Genome::ChildCrossOverOnePoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1);
+		// else if(this->id%4 == 2)
+		// 	g = Genome::ChildCrossOverTwoPoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1, pt2);
+		// else
+		// 	g = Genome::ChildCrossOverhalf(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
+		g = new Genome(100, 2, 50);
 
 		Person *p = new Person(this->population, g, this->map->getStart());
-		this->people.push_back(p);
+		this->people.push_back(make_pair(p,0));
 		this->population++;
 	}
 }
@@ -83,22 +87,23 @@ void Village::evaluate(){
 	int note = 0;
 	Person *p;
 	for(int i=0;i<this->population;++i){
-		p = this->people.at(i);
-		note = -(p->getLocation()->distance(this->map->getStart()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived())); 
-		this->ranking.push_back(make_pair(i, note));
+		p = this->people.at(i).first;
+		note = (p->getLocation()->distance(this->map->getStart()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()));
+		p->reset(this->map); 
+		this->people.at(i).second = note;
 	}
 
-	std::sort(this->ranking.begin(), this->ranking.end(), pairCompare);	
+	std::sort(this->people.begin(), this->people.end(), pairCompare);
 }
 
 void Village::kill(){
-	int pop = this->population;
-	for(int i=pop*66/100; i<pop; ++i){
-		this->people.erase(this->people.begin()+this->ranking.at(i).first);
+	int l= ceil(this->population/3);
+	for(int i=0; i<l; ++i){
+		this->people.pop_back();
 		this->population--;
 	}
 }
 
-static bool pairCompare(const std::pair<int, int>& firstElem, const std::pair<int, int>& secondElem){
-  return firstElem.second < secondElem.second;
+static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pair<Person*, int>& secondElem){
+  return firstElem.second > secondElem.second;
 }

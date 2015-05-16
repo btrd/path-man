@@ -16,6 +16,7 @@ public:
 	Point* getLocation();
 	bool getArrived();
 	int getGenomePosition();
+	void reset(Map* m);
 
 private:
 	int id;

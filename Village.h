@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <algorithm>
+#include <math.h>
 #include "Person.h"
 #include "Map.h"
 #include "population_struct.h"
 
-static bool pairCompare(const std::pair<int, int>& firstElem, const std::pair<int, int>& secondElem);
+static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pair<Person*, int>& secondElem);
 
 class Village
 {
@@ -27,8 +28,7 @@ private:
 	int id;
 	int population;
 	Map* map;
-	std::vector<Person*> people;
-	std::vector<std::pair<int, int> > ranking;
+	std::vector<std::pair<Person*, int> > people;
 };
 
 #endif

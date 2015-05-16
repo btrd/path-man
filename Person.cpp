@@ -35,3 +35,10 @@ bool Person::getArrived(){
 int Person::getGenomePosition(){
 	return this->iteration;
 }
+
+void Person::reset(Map* m){
+	this->iteration=0;
+	this->alive = true;
+	this->arrived = false;
+	this->location = m->getStart();
+}
