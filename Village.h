@@ -17,10 +17,12 @@ public:
 	~Village();
 
 	Map* getMap();
-	int iteration();
+	int iterate();
+	void generate();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
 	struct population_struct getPopulationStruct();
+	void setPopulationStruct(struct population_struct pop);
 	void reproduce();
 	void evaluate();
 	void kill();

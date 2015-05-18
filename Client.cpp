@@ -1,6 +1,10 @@
 #include "Village.h"
 #include "callRpc.h"
 #include "population_struct.h"
+#include "Genome.h"
+#include <unistd.h>
+
+#include <SFML/Graphics.hpp>
 
 extern "C" struct population_struct call_rpc(struct population_struct);
 
@@ -18,46 +22,199 @@ void showMap(Village *v) {
 	int val;
 
 	for(int l=0; l<100;++l){
-		if(l==99){
-			v->iteration();
+		v->iterate();
 
-			for(int i=0;i<m;++i){
-				for(int j=0;j<n;++j){
-					for(unsigned int k=0;k<people.size() && !b;++k){
-						if(i == people.at(k)->getLocation()->getY() && j == people.at(k)->getLocation()->getX())
-							b = true;
-					}
-					val = map->getPoints().at(i*n+j)->getValue();
-					if(b)
-						cout << "*";
-					else if(val == 0)
-						cout << " ";
-					else
-						cout << val;
-
-					if(b && val == 3)
-						l = 100;
-					b = false;
+		for(int i=0;i<m;++i){
+			for(int j=0;j<n;++j){
+				// for(unsigned int k=0;k<people.size() && !b;++k){
+				// 	if(i == people.at(k)->getLocation()->getY() && j == people.at(k)->getLocation()->getX())
+				// 		b = true;
+				// }
+				val = map->getPoints().at(i*n+j)->getValue();
+				if(i == people.at(0)->getLocation()->getY() && j == people.at(0)->getLocation()->getX()){
+					cout << people.at(0)->getLocation()->getX() << "\n";
+					cout << "A";
 				}
-				cout << "\n";
+				else if(val == 0)
+					cout << " ";
+				else
+					cout << val;
+
+				if(b && val == 3)
+					l = 100;
+				b = false;
 			}
-
-			v->evaluate();
-			v->kill();
-			v->reproduce();
-
-			l=0;
+			cout << "\n";
 		}
-		else{
-			v->iteration();
-		}
+
+		sleep(1);
+		v->generate();
 	}
 }
 
-int main(int argc, char const *argv[]) {
+void drawmap(Village *v, int nbGeneration)
+{
+    int i, j, k;
+    int TILE_SIZE = 15;
+	Map *map = v->getMap();
+	int m = map->getm();
+    int n = map->getn();
+    int x,y;
+    vector<Point*> points = map->getPoints();
+    vector<sf::RectangleShape> pixels;
+    Point * tmp_point;
+    Genome * best;
+    Gene gene;
+    sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Map Rendering Test");
+    	
+	for(k = 0; k < nbGeneration; k++) //Start new Generation
+	{
+		srand(time(NULL)+k);
+		cout << "Generation num : " << k << endl;
+		v->iterate();
+    	//Close Event
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        //---------Redraw Window
+        //Prepare Map 
+	    pixels.clear();
+	    for (i = 0; i < n; i++)
+	    {
+	        for (j = 0; j < m; j++)
+	        {
+	            sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+	            tile.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+	            tile.setOutlineThickness(1);
+	            tile.setOutlineColor(sf::Color(0, 0, 0));
+	            
+	            tmp_point = points.at(i*m+j);
+
+	            switch(tmp_point->getValue())
+	            {
+	            	case 0: //normal
+	            		tile.setFillColor(sf::Color::Green);
+	            		break;
+	            	case 1: //Wall
+	            		tile.setFillColor(sf::Color::White);
+	            		break;
+	            	case 2: //Start
+	            		tile.setFillColor(sf::Color::Red);
+	            		break;
+	            	case 3: //End
+	            		tile.setFillColor(sf::Color::Blue);
+	            		break;
+	            	default: //default (mmap invalid)é
+	            		tile.setFillColor(sf::Color::White);
+	            		break;
+	            }
+	            tile.setPosition(tmp_point->getX()*TILE_SIZE, tmp_point->getY()*TILE_SIZE);
+	            
+	            pixels.push_back(tile);
+	        } 
+	    }
+
+        window.clear();
+        
+        best = v->getPersonTest()->getGenome();
+
+		cout << "Position : " << v->getPersonTest()->getGenomePosition() << "\n";
+		cout << "Alive : " << v->getPersonTest()->getAlive() << "\n";
+		//cout << "Note : " << this->people.at(0).second << "\n";
+		cout << "X : " << v->getPersonTest()->getLocation()->getX() << "\n";
+		cout << "Y : " << v->getPersonTest()->getLocation()->getY() << "\n";
+
+        tmp_point = map->getStart();
+        x = tmp_point->getX();
+        y = tmp_point->getY();
+
+        for (i = 0; i < best->getSize()-1; i++)
+        {
+        	gene = best->getAdn().at(i);
+			for (j = 0; j < gene.steps; j++)
+			{
+				switch(gene.direct)
+				{
+					case NORTH:
+						--y;
+						break;
+					case NORTH_EAST:
+						--y;
+						++x;
+						break;
+					case EAST:
+						++x;
+						break;
+					case SOUTH_EAST:
+						++y;
+						++x;
+						break;
+					case SOUTH:
+						++y;
+						break;
+					case SOUTH_WEST:
+						++y;
+						--x;
+						break;
+					case WEST:
+						--x;
+						break;
+					case NORTH_WEST:
+						--y;
+						--x;
+						break;
+				}
+				if (x <= 0 || y <= 0 || x >= m || y >=n 
+					|| points.at(y*n+x)->getValue() == 1 //hit a wall
+					|| points.at(y*n+x)->getValue() == 3) //ended
+				{
+					i = best->getSize();
+					break;
+				}
+				pixels.at(y*n+x).setFillColor(sf::Color::Magenta);
+			}
+        }
+        pixels.at(y*n+x).setFillColor(sf::Color::Black);
+
+        for (i = 0; i < n; i++) //draw map
+        {
+            for (j = 0; j < m; j++)
+            {
+                window.draw(pixels.at(i*m+j));
+            }
+        }
+        window.display();
+
+        //----------End Redraw
+        v->generate();
+    }//End Generation
+    cout << "Finished" << endl;
+	while (window.isOpen()) //Boucle principale
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+    }
+}
+
+int main(int argc, char const *argv[])
+{
+	if(argc != 3)
+	{
+		cout << "Usage : ./Client <idvillage> <nbGeneration>" << endl;
+		return -1;
+	}
 	Village *v = new Village(atoi(argv[1]), 10);
-	struct population_struct pop = v->getPopulationStruct();
-	struct population_struct new_pop = call_rpc(pop);
+	drawmap(v, atoi(argv[2]));
+	//showMap(v);
+	//struct population_struct pop = v->getPopulationStruct();
+	//struct population_struct new_pop = call_rpc(pop);
 	// v->setPopulationStruct(new_pop);
 	return 0;
 }

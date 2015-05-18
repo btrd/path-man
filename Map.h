@@ -30,6 +30,8 @@ public:
 	Point* getStart();
 	Point* getEnd();
 	Point* change(Point* p, int direct, int steps);
+	int getn();
+	int getm();
 	void displayWith(Point* p);
 	vector<Point*> getPoints();
 

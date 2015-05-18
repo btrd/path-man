@@ -10,7 +10,7 @@ Map::Map()
 	int j = 0;
 	string line;
 
-	ifstream map("map");
+	ifstream map("map2");
 
 	if(map.is_open()){
 		while(getline(map, line)){
@@ -82,6 +82,15 @@ Point* Map::getStart(){
 	return this->start;
 }
 
+int Map::getn()
+{
+	return this->n;
+}
+int Map::getm()
+{
+	return this->m;
+}
+
 Point* Map::change(Point* p, int direct, int steps){
 	int x = p->getX();
 	int y = p->getY();
@@ -125,7 +134,7 @@ Point* Map::change(Point* p, int direct, int steps){
 			i=steps;
 	}
 
-	return this->points.at(x+y*n);
+	return res;
 }
 
 void Map::displayWith(Point* p){

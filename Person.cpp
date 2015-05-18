@@ -46,3 +46,7 @@ void Person::reset(Map* m){
 int Person::getId(){
 	return this->id;
 }
+
+bool Person::getAlive(){
+	return this->alive;
+}
