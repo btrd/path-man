@@ -33,18 +33,20 @@ std::vector<Person*> Village::getPeople(){
 	return p;
 }
 
-int Village::iteration(){
+int Village::iterate(){
 	for(int i=0;i<this->population;++i){
 		for(int  j=0;j<100; ++j){
 			this->people.at(i).first->move(this->map);
 		}
 	}
 
+	return 1;
+}
+
+void Village::generate(){
 	evaluate();
 	kill();
 	reproduce();
-
-	return 1;
 }
 
 struct population_struct Village::getPopulationStruct() {

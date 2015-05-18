@@ -17,7 +17,8 @@ public:
 	~Village();
 
 	Map* getMap();
-	int iteration();
+	int iterate();
+	void generate();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
 	struct population_struct getPopulationStruct();
