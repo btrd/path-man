@@ -8,7 +8,7 @@ Village::Village(int id, int population)
 	this->map = new Map();
 
 	for(int i=0;i<population;++i){
-		Genome *g = new Genome(10, 2, 50);
+		Genome *g = new Genome(100, 2, 50);
 		Person *p = new Person(i, g, this->map->getStart());
 		this->people.push_back(make_pair(p, 0));
 	}
@@ -34,9 +34,15 @@ std::vector<Person*> Village::getPeople(){
 }
 
 int Village::iteration(){
-	for(int i=0;i<population;++i){
-		this->people.at(i).first->move(this->map);
+	for(int i=0;i<this->population;++i){
+		for(int  j=0;j<100; ++j){
+			this->people.at(i).first->move(this->map);
+		}
 	}
+
+	evaluate();
+	kill();
+	reproduce();
 
 	return 1;
 }
@@ -44,19 +50,33 @@ int Village::iteration(){
 struct population_struct Village::getPopulationStruct() {
 	struct population_struct res;
 	res.id = this->id;
-	res.size = this->population;
-  res.tab = new adn_struct[res.size];
-  for(int i = 0; i < res.size; i++) {
-  	vector<Gene> adn = this->people.at(i).first->getGenome()->getAdn();
-    res.tab[i].size = adn.size();
-    res.tab[i].tab = new int[adn.size()*2];
-    int k = -1;
-    for(int j = 0; j < adn.size(); j++) {
-      res.tab[i].tab[++k] = adn[j].direct;
-      res.tab[i].tab[++k] = adn[j].steps;
-    }
-  }
-  return res;
+	res.size = 10;
+ 	res.tab = new adn_struct[res.size];
+ 	srand(time(NULL));
+	for(int i = 0; i < res.size; i++) {
+		int r = rand()%this->population-1;
+		vector<Gene> adn = this->people.at(r).first->getGenome()->getAdn();
+		res.tab[i].size = adn.size();
+		res.tab[i].tab = new int[adn.size()*2];
+		int k = -1;
+		for(int j = 0; j < adn.size(); j++) {
+			res.tab[i].tab[++k] = adn[j].direct;
+			res.tab[i].tab[++k] = adn[j].steps;
+		}
+
+		this->people.erase(this->people.begin()+r);
+		this->population--;
+	}
+	return res;
+}
+
+void Village::setPopulationStruct(struct population_struct pop){
+	for(int i=0;i < pop.size; i++){
+		Genome *g = new Genome(100, 2, 50, pop.tab[i].tab);
+		Person *p = new Person(this->population, g, this->map->getStart());
+		this->people.push_back(make_pair(p,0));
+		this->population++;
+	}
 }
 
 void Village::reproduce(){
