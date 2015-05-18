@@ -10,7 +10,7 @@ Map::Map()
 	int j = 0;
 	string line;
 
-	ifstream map("map");
+	ifstream map("map2");
 
 	if(map.is_open()){
 		while(getline(map, line)){

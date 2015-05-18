@@ -1,6 +1,8 @@
 #include "Village.h"
 #include "population_struct.h"
 
+int SIZE_GENOME = 1000;
+
 Village::Village(int id, int population)
 {
 	this->id = id;
@@ -8,7 +10,7 @@ Village::Village(int id, int population)
 	this->map = new Map();
 
 	for(int i=0;i<population;++i){
-		Genome *g = new Genome(100, 2, 50);
+		Genome *g = new Genome(SIZE_GENOME, 2, 50);
 		Person *p = new Person(i, g, this->map->getStart());
 		this->people.push_back(make_pair(p, 0));
 	}
@@ -35,7 +37,7 @@ std::vector<Person*> Village::getPeople(){
 
 int Village::iterate(){
 	for(int i=0;i<this->population;++i){
-		for(int  j=0;j<100; ++j){
+		for(int  j=0;j<SIZE_GENOME; ++j){
 			this->people.at(i).first->move(this->map);
 		}
 	}
@@ -74,7 +76,7 @@ struct population_struct Village::getPopulationStruct() {
 
 void Village::setPopulationStruct(struct population_struct pop){
 	for(int i=0;i < pop.size; i++){
-		Genome *g = new Genome(100, 2, 50, pop.tab[i].tab);
+		Genome *g = new Genome(SIZE_GENOME, 2, 50, pop.tab[i].tab);
 		Person *p = new Person(this->population, g, this->map->getStart());
 		this->people.push_back(make_pair(p,0));
 		this->population++;
