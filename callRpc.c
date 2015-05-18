@@ -2,15 +2,16 @@
 
 struct population_struct call_rpc(struct population_struct p) {
   int stat;
+  int i, j;
   struct population_struct res;
   struct population_struct pop;
   pop.size = 2;
   pop.id = 1;
   pop.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct)*pop.size);
-  for(int i = 0; i < pop.size; i++) {
+  for(i = 0; i < pop.size; i++) {
     pop.tab[i].size = 4;
     pop.tab[i].tab = (int *)malloc(sizeof(int)*pop.tab[i].size*2);
-    for(int j = 0; j < pop.tab[i].size * 2; j++) {
+    for(j = 0; j < pop.tab[i].size * 2; j++) {
       pop.tab[i].tab[j] = j + pop.id;
     }
   }

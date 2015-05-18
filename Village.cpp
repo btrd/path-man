@@ -71,7 +71,8 @@ struct population_struct Village::getPopulationStruct() {
 		res.tab[i].size = adn.size();
 		res.tab[i].tab = new int[adn.size()*2];
 		int k = -1;
-		for(int j = 0; j < adn.size(); j++) {
+		int size = adn.size();
+		for(int j = 0; j < size; j++) {
 			res.tab[i].tab[++k] = adn[j].direct;
 			res.tab[i].tab[++k] = adn[j].steps;
 		}
