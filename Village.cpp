@@ -12,7 +12,7 @@ Village::Village(int id, int population)
 		Person *p = new Person(i, g, this->map->getStart());
 		this->people.push_back(make_pair(p, 0));
 	}
-	this->reproduce();
+	//this->reproduce();
 }
 
 Map* Village::getMap(){
@@ -21,7 +21,7 @@ Map* Village::getMap(){
 
 Person* Village::getPersonTest(){
 	Person* p = this->people.at(0).first;
-	//p->getGenome()->PrintGenome();
+	p->getGenome()->PrintGenome();
 	return p;
 }
 
@@ -39,6 +39,10 @@ int Village::iteration(){
 			this->people.at(i).first->move(this->map);
 		}
 	}
+
+	evaluate();
+	kill();
+	reproduce();
 
 	return 1;
 }
@@ -105,9 +109,8 @@ void Village::evaluate(){
 		note = -(p->getLocation()->distance(this->map->getEnd()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()));
 		p->reset(this->map); 
 		this->people.at(i).second = note;
-		//cout << note << " ";
+		//cout << note << "\n";
 	}
-	//cout << "\n";
 
 	std::sort(this->people.begin(), this->people.end(), pairCompare);
 }
