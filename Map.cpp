@@ -144,6 +144,10 @@ vector<Point*> Map::getPoints(){
 	return this->points;
 }
 
+Point* Map::getEnd(){
+	return this->end;
+}
+
 // int main(int argc, char const *argv[])
 // {
 // 	Map *m = new Map();

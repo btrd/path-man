@@ -66,16 +66,15 @@ void Village::reproduce(){
 	int pt1 = rand()%100;
 	int pt2 = pt1+rand()%(100-pt1);
 	Genome *g;
-	for(int i=0;i<pop;i=i+2){
-		// if(this->id%4 == 0)
-		// 	g = Genome::ChildRandom(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
-		// else if(this->id%4 == 1)
-		// 	g = Genome::ChildCrossOverOnePoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1);
-		// else if(this->id%4 == 2)
-		// 	g = Genome::ChildCrossOverTwoPoint(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome(), pt1, pt2);
-		// else
-		// 	g = Genome::ChildCrossOverhalf(this->people.at(i)->getGenome(), this->people.at(i+1)->getGenome());
-		g = new Genome(100, 2, 50);
+	for(int i=0;i<pop/2;++i){
+		if(this->id%4 == 0)
+			g = Genome::ChildRandom(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome());
+		else if(this->id%4 == 1)
+			g = Genome::ChildCrossOverOnePoint(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome(), pt1);
+		else if(this->id%4 == 2)
+			g = Genome::ChildCrossOverTwoPoint(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome(), pt1, pt2);
+		else
+			g = Genome::ChildCrossOverhalf(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome());
 
 		Person *p = new Person(this->population, g, this->map->getStart());
 		this->people.push_back(make_pair(p,0));
@@ -88,9 +87,10 @@ void Village::evaluate(){
 	Person *p;
 	for(int i=0;i<this->population;++i){
 		p = this->people.at(i).first;
-		note = (p->getLocation()->distance(this->map->getStart()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()));
+		note = -(p->getLocation()->distance(this->map->getEnd()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()));
 		p->reset(this->map); 
 		this->people.at(i).second = note;
+		//cout << note << "\n";
 	}
 
 	std::sort(this->people.begin(), this->people.end(), pairCompare);

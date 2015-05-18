@@ -42,3 +42,7 @@ void Person::reset(Map* m){
 	this->arrived = false;
 	this->location = m->getStart();
 }
+
+int Person::getId(){
+	return this->id;
+}
