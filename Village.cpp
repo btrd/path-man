@@ -8,12 +8,11 @@ Village::Village(int id, int population)
 	this->map = new Map();
 
 	for(int i=0;i<population;++i){
-		Genome *g = new Genome(100, 2, 50);
+		Genome *g = new Genome(10, 2, 50);
 		Person *p = new Person(i, g, this->map->getStart());
 		this->people.push_back(make_pair(p, 0));
 	}
-
-	this->reproduce();
+	//this->reproduce();
 }
 
 Map* Village::getMap(){
@@ -46,15 +45,15 @@ struct population_struct Village::getPopulationStruct() {
 	struct population_struct res;
 	res.id = this->id;
 	res.size = this->population;
-  res.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct) * res.size);
+  res.tab = new adn_struct[res.size];
   for(int i = 0; i < res.size; i++) {
   	vector<Gene> adn = this->people.at(i).first->getGenome()->getAdn();
     res.tab[i].size = adn.size();
-    res.tab[i].tab = (int *)malloc(sizeof(int) * adn.size() * 2);
+    res.tab[i].tab = new int[adn.size()*2];
     int k = -1;
     for(int j = 0; j < adn.size(); j++) {
-      res.tab[i].tab[k++] = adn[j].direct;
-      res.tab[i].tab[k++] = adn[j].steps;
+      res.tab[i].tab[++k] = adn[j].direct;
+      res.tab[i].tab[++k] = adn[j].steps;
     }
   }
   return res;

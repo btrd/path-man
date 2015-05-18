@@ -56,18 +56,20 @@ struct population_struct * shuffle(struct population_struct *p) {
     next_i = current_i + 1;
   }
 
-  for (int i = 0; i < p->size/2; i++) {
-    for (int j = 0; j < adn_size * 2; j++) {
-      res.tab[i].tab[j] = populations[current_i].tab[i].tab[j];
-    }
-  }
-
-  for (int i = p->size/2; i < p->size; i++) {
+  for (int i = 0; i < p->size; i++) {
     for (int j = 0; j < adn_size * 2; j++) {
       res.tab[i].tab[j] = populations[next_i].tab[i].tab[j];
     }
   }
-  
+  printf("SERVER Res size %d\n", res.size);
+  for(int i = 0; i < res.size; i++) {
+    struct adn_struct *adn = &res.tab[i];
+    printf("SERVER ADN Size %d\n", adn->size);
+    for(int j = 0; j < adn->size * 2; j++) {
+      printf("%d-", adn->tab[j]);
+    }
+    printf("\n");
+  }
   return &res;
 }
 
