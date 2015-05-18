@@ -15,6 +15,7 @@ public:
 	Genome* getGenome();
 	Point* getLocation();
 	bool getArrived();
+	bool getAlive();
 	int getGenomePosition();
 	void reset(Map* m);
 	int getId();

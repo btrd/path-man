@@ -1,7 +1,7 @@
 #include "Village.h"
 #include "population_struct.h"
 
-int SIZE_GENOME = 300;
+int SIZE_GENOME = 1000;
 int SIZE_STEP = 3;
 int MUTATION_CHANCE = 1;
 
@@ -48,7 +48,6 @@ int Village::iterate(){
 			this->people.at(i).first->move(this->map);
 		}
 	}
-	cout << this->people.at(0).first->getGenomePosition() << "\n";
 
 	return 1;
 }
@@ -94,8 +93,8 @@ void Village::setPopulationStruct(struct population_struct pop){
 void Village::reproduce(){
 	int pop = this->population;
 	srand(time(NULL));
-	int pt1 = rand()%100;
-	int pt2 = pt1+rand()%(100-pt1);
+	int pt1 = rand()%SIZE_GENOME;
+	int pt2 = pt1+rand()%(SIZE_GENOME-pt1);
 	Genome *g;
 	for(int i=0;i<pop;i=i+2){
 		if(i%4 == 0)

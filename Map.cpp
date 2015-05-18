@@ -134,7 +134,7 @@ Point* Map::change(Point* p, int direct, int steps){
 			i=steps;
 	}
 
-	return this->points.at(x+y*n);
+	return res;
 }
 
 void Map::displayWith(Point* p){
