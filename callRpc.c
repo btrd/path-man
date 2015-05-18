@@ -2,9 +2,8 @@
 
 struct population_struct call_rpc(struct population_struct p) {
   int stat;
-  int i, j;
   struct population_struct res;
-  struct population_struct pop;
+  /*struct population_struct pop;
   pop.size = 2;
   pop.id = 1;
   pop.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct)*pop.size);
@@ -14,12 +13,12 @@ struct population_struct call_rpc(struct population_struct p) {
     for(j = 0; j < pop.tab[i].size * 2; j++) {
       pop.tab[i].tab[j] = j + pop.id;
     }
-  }
+  }*/
 
-  /*for(i = 0; i < p.size; i++) {
+  /*for(int i = 0; i < p.size; i++) {
     struct adn_struct *adn = &p.tab[i];
     printf("Size %d\n", adn->size);
-    for(j = 0; j < adn->size * 2; j++) {
+    for(int j = 0; j < adn->size * 2; j++) {
       printf("%d-", adn->tab[j]);
     }
     printf("\n");
@@ -30,7 +29,7 @@ struct population_struct call_rpc(struct population_struct p) {
     /* versnum */ VERSNUM,
     /* procnum */ PROCNUM,
     /* encodage argument */ (xdrproc_t)xdr_population,
-    /* argument */ (char *)&pop,
+    /* argument */ (char *)&p,
     /* decodage retour */ (xdrproc_t)xdr_population,
     /* retour de la fonction distante */(char *)&res
   );
