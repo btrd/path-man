@@ -1,7 +1,8 @@
 #include "Village.h"
 #include "population_struct.h"
 
-int SIZE_GENOME = 1000;
+int SIZE_GENOME = 300;
+int SIZE_STEP = 3;
 int MUTATION_CHANCE = 1;
 
 Village::Village(int id, int population)
@@ -13,14 +14,14 @@ Village::Village(int id, int population)
 	for(int i=0;i<population;++i){
 		Genome *g;
 		if(i < 8)
-			g = new Genome(SIZE_GENOME, 2, MUTATION_CHANCE, i);
+			g = new Genome(SIZE_GENOME, SIZE_STEP, MUTATION_CHANCE, i);
 		else
-			g = new Genome(SIZE_GENOME, 2, MUTATION_CHANCE);
+			g = new Genome(SIZE_GENOME, SIZE_STEP, MUTATION_CHANCE);
 
 		Person *p = new Person(i, g, this->map->getStart());
 		this->people.push_back(make_pair(p, 0));
 	}
-	//this->reproduce();
+	this->reproduce();
 }
 
 Map* Village::getMap(){
@@ -47,6 +48,7 @@ int Village::iterate(){
 			this->people.at(i).first->move(this->map);
 		}
 	}
+	cout << this->people.at(0).first->getGenomePosition() << "\n";
 
 	return 1;
 }
@@ -82,7 +84,7 @@ struct population_struct Village::getPopulationStruct() {
 
 void Village::setPopulationStruct(struct population_struct pop){
 	for(int i=0;i < pop.size; i++){
-		Genome *g = new Genome(SIZE_GENOME, 2, MUTATION_CHANCE, pop.tab[i].tab);
+		Genome *g = new Genome(SIZE_GENOME, SIZE_STEP, MUTATION_CHANCE, pop.tab[i].tab);
 		Person *p = new Person(this->population, g, this->map->getStart());
 		this->people.push_back(make_pair(p,0));
 		this->population++;
@@ -95,15 +97,15 @@ void Village::reproduce(){
 	int pt1 = rand()%100;
 	int pt2 = pt1+rand()%(100-pt1);
 	Genome *g;
-	for(int i=0;i<pop/2;++i){
-		if(this->id%4 == 0)
-			g = Genome::ChildRandom(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome());
-		else if(this->id%4 == 1)
-			g = Genome::ChildCrossOverOnePoint(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome(), pt1);
-		else if(this->id%4 == 2)
-			g = Genome::ChildCrossOverTwoPoint(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome(), pt1, pt2);
+	for(int i=0;i<pop;i=i+2){
+		if(i%4 == 0)
+			g = Genome::ChildRandom(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome());
+		else if(i%4 == 1)
+			g = Genome::ChildCrossOverOnePoint(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome(), pt1);
+		else if(i%4 == 2)
+			g = Genome::ChildCrossOverTwoPoint(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome(), pt1, pt2);
 		else
-			g = Genome::ChildCrossOverhalf(this->people.at(i).first->getGenome(), this->people.at(pop-i-1).first->getGenome());
+			g = Genome::ChildCrossOverhalf(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome());
 
 		Person *p = new Person(this->population, g, this->map->getStart());
 		this->people.push_back(make_pair(p,0));

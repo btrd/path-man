@@ -74,7 +74,7 @@ void drawmap(Village *v, int nbGeneration)
     	
 	for(k = 0; k < nbGeneration; k++) //Start new Generation
 	{
-		srand(time(NULL));
+		srand(time(NULL)+k);
 		cout << "Generation num : " << k << endl;
 		v->iterate();
     	//Close Event
@@ -208,7 +208,7 @@ int main(int argc, char const *argv[])
 		cout << "Usage : ./Client <idvillage> <nbGeneration>" << endl;
 		return -1;
 	}
-	Village *v = new Village(atoi(argv[1]), 10);
+	Village *v = new Village(atoi(argv[1]), 100);
 	drawmap(v, atoi(argv[2]));
 	//struct population_struct pop = v->getPopulationStruct();
 	//struct population_struct new_pop = call_rpc(pop);
