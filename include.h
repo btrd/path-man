@@ -10,7 +10,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include "population_struct.h"
-#define PROGNUM 0x20000100
+#define PROGNUM 0x20000101
 #define VERSNUM 1
 #define PROCNUM 1
 bool_t xdr_population(XDR *, struct population_struct *);

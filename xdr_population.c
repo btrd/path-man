@@ -7,12 +7,12 @@ bool_t xdr_adn(XDR *xdrs, struct adn_struct *adn) {
     res = 0;
   }
 
-  /*Force XDR to allocate memory while decoding
+  /*Force XDR to allocate memory while decoding*/
   // if((xdrs->x_op == XDR_DECODE) && (adn->tab != NULL)) {
-  //   printf("Free?1\n");
+  //   printf("XDR Free ADN\n");
   //   free(adn->tab);
   //   adn->tab = NULL;
-  // }*/
+  // }
   usize = (adn->size * 2);
   if (xdr_array(xdrs, (char **)&adn->tab, &usize, (adn->size * 2), sizeof(int), (xdrproc_t)xdr_int) == 0) {
     res = 0;
@@ -29,13 +29,12 @@ bool_t xdr_population(XDR *xdrs, struct population_struct *p) {
   if (xdr_int(xdrs, &p->id) == 0) {
     res = 0;
   }
-  
-  /*Force XDR to allocate memory while decoding
+  /*Force XDR to allocate memory while decoding*/
   // if((xdrs->x_op == XDR_DECODE) && (p->tab != NULL)) {
+  //   printf("XDR Free POP\n");
   //   free(p->tab);
   //   p->tab = NULL;
-  //   printf("xdr2bis\n");
-  // }*/
+  // }
   usize = p->size;
   if (xdr_array(xdrs, (char **)&p->tab, &usize, p->size, sizeof(struct adn_struct), (xdrproc_t)xdr_adn) == 0) {
     res = 0;

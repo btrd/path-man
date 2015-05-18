@@ -21,9 +21,9 @@ int replacePopInPops(struct population_struct *p) {
   if (res == -1) {
     populations[populations_size].size = p->size;
     populations[populations_size].id = p->id;
-    populations[populations_size].tab = (struct adn_struct *)malloc(sizeof(struct adn_struct)*p->size);
+    populations[populations_size].tab = malloc(sizeof(struct adn_struct)*p->size);
     for (int k = 0; k < p->size; k++) {
-      populations[populations_size].tab[k].tab = (int *)malloc(sizeof(int)*adn_size*2);
+      populations[populations_size].tab[k].tab = malloc(sizeof(int)*adn_size*2);
       for (int j = 0; j < adn_size * 2; j++) {
         populations[populations_size].tab[k].tab[j] =  p->tab[k].tab[j];
       }
@@ -39,29 +39,29 @@ struct population_struct * shuffle(struct population_struct *p) {
   static struct population_struct res;
   res.id = p->id;
   res.size = p->size;
-  res.tab = (struct adn_struct *)malloc(sizeof(struct adn_struct) * res.size);
-  for(int i = 0; i < res.size; i++) {
-    res.tab[i].size = adn_size;
-    res.tab[i].tab = (int *)malloc(sizeof(int) * adn_size * 2);
-  }
+  res.tab = malloc(sizeof(struct adn_struct) * res.size);
 
   int current_i = replacePopInPops(p);
-  if(populations_size <= 1) {
-    return p;
-  }
   int next_i;
-  if (current_i == populations_size-1) {
-    next_i = 0;
-  } else {
-    next_i = current_i + 1;
-  }
+  if(populations_size > 1) {
+    if (current_i == populations_size-1) {
+      next_i = 0;
+    } else {
+      next_i = current_i + 1;
+    }
 
+  } else {
+    next_i = current_i;
+  }
   for (int i = 0; i < p->size; i++) {
+    res.tab[i].size = adn_size;
+    res.tab[i].tab = malloc(sizeof(int) * adn_size * 2);
     for (int j = 0; j < adn_size * 2; j++) {
       res.tab[i].tab[j] = populations[next_i].tab[i].tab[j];
     }
   }
   printf("SERVER Res size %d\n", res.size);
+  printf("SERVER Res id %d\n", res.id);
   for(int i = 0; i < res.size; i++) {
     struct adn_struct *adn = &res.tab[i];
     printf("SERVER ADN Size %d\n", adn->size);
@@ -70,12 +70,12 @@ struct population_struct * shuffle(struct population_struct *p) {
     }
     printf("\n");
   }
-  return &res;
+  return p;
 }
 
 int main (void) {
   // 100 client/id au maximum
-  populations = (struct population_struct *)malloc(sizeof(struct population_struct)*100);
+  populations = malloc(sizeof(struct population_struct)*100);
   bool_t stat;
   stat = registerrpc(
     /* prognum */ PROGNUM,
