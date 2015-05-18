@@ -82,6 +82,15 @@ Point* Map::getStart(){
 	return this->start;
 }
 
+int Map::getn()
+{
+	return this->n;
+}
+int Map::getm()
+{
+	return this->m;
+}
+
 Point* Map::change(Point* p, int direct, int steps){
 	int x = p->getX();
 	int y = p->getY();
