@@ -38,6 +38,20 @@ Genome::Genome(int size, int maxsteps, int mutationchance, int direction)
 	}
 }
 
+Genome::Genome(int size, int maxsteps, int mutationchance, int * tab)
+{
+	int i, direct, steps;
+	this->maxsteps = maxsteps;
+	this->size = size;
+	this->mutationchance = mutationchance;
+	for (i = 0; i < size*2 ; i = i+2)
+	{
+		direct = tab[i];
+		steps = tab[i+1];
+		adn.push_back(mkGene(direct, steps));
+	}
+}
+
 Genome::~Genome() {}
 
 int Genome::getSize()

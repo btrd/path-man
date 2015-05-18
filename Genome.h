@@ -29,6 +29,7 @@ public:
 	Genome();
 	Genome(int size, int maxsteps, int mutationchance);
 	Genome(int size, int maxsteps, int mutationchance, int direction); //Go in one direction only
+	Genome(int size, int maxsteps, int mutationchance, int * tab); //New Genome from RPC
 	~Genome();
 
 	int getSize();
