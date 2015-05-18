@@ -128,13 +128,12 @@ void drawmap(Village *v)
     }
 }
 
-int main(int argc, char const *argv[]) {
-
-	Village *v = new Village(1, 100);
+int main(int argc, char const *argv[])
+{
+	Village *v = new Village(atoi(argv[1]), 10);
 	drawmap(v);
 	struct population_struct pop = v->getPopulationStruct();
 	struct population_struct new_pop = call_rpc(pop);
 	// v->setPopulationStruct(new_pop);
-	//showMap(v);
 	return 0;
 }
