@@ -1,8 +1,8 @@
 #include "Village.h"
 #include "population_struct.h"
 
-int SIZE_GENOME = 1000;
-int SIZE_STEP = 3;
+int SIZE_GENOME = 150;
+int SIZE_STEP = 1;
 int MUTATION_CHANCE = 1;
 
 Village::Village(int id, int population)
@@ -44,6 +44,7 @@ std::vector<Person*> Village::getPeople(){
 
 int Village::iterate(){
 	for(int i=0;i<this->population;++i){
+		this->people.at(i).first->reset(this->map);
 		for(int  j=0;j<SIZE_GENOME; ++j){
 			this->people.at(i).first->move(this->map);
 		}
@@ -95,6 +96,8 @@ void Village::reproduce(){
 	srand(time(NULL));
 	int pt1 = rand()%SIZE_GENOME;
 	int pt2 = pt1+rand()%(SIZE_GENOME-pt1);
+	//std::random_shuffle(this->people.begin(), this->people.end());
+	//cout << this->people.at(0).first->getId() << "\n";
 	Genome *g;
 	for(int i=0;i<pop;i=i+2){
 		if(i%4 == 0)
@@ -117,8 +120,8 @@ void Village::evaluate(){
 	Person *p;
 	for(int i=0;i<this->population;++i){
 		p = this->people.at(i).first;
-		note = -(p->getLocation()->distance(this->map->getEnd()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived()));
-		p->reset(this->map); 
+		note = -p->getLocation()->distance(this->map->getEnd()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived());
+		//p->reset(this->map); 
 		this->people.at(i).second = note;
 		//cout << note << "\n";
 	}
@@ -136,4 +139,8 @@ void Village::kill(){
 
 static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pair<Person*, int>& secondElem){
   return firstElem.second > secondElem.second;
+}
+
+int Village::getBestNote(){
+	return this->people.at(0).second;
 }

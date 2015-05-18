@@ -8,47 +8,59 @@
 
 extern "C" struct population_struct call_rpc(struct population_struct);
 
-void showMap(Village *v) {
-	Map *map = v->getMap();
-	map->display();
+void showMap(Village *v, int nb) {
+	//Map *map = v->getMap();
+	//map->display();
 
 	// Person *p = v->getPersonTest();
 	// cout << p->getLocation()->getX() << "\n";
 	// cout << p->getLocation()->getY() << "\n";
-	vector<Person*> people = v->getPeople();
-	int n = 100;
-	int m = 50;
-	bool b = false;
-	int val;
+	// vector<Person*> people = v->getPeople();
+	// int n = 100;
+	// int m = 50;
+	// bool b = false;
+	// int val;
 
-	for(int l=0; l<100;++l){
+	for(int l=0; l<nb;++l){
 		v->iterate();
 
-		for(int i=0;i<m;++i){
-			for(int j=0;j<n;++j){
-				// for(unsigned int k=0;k<people.size() && !b;++k){
-				// 	if(i == people.at(k)->getLocation()->getY() && j == people.at(k)->getLocation()->getX())
-				// 		b = true;
-				// }
-				val = map->getPoints().at(i*n+j)->getValue();
-				if(i == people.at(0)->getLocation()->getY() && j == people.at(0)->getLocation()->getX()){
-					cout << people.at(0)->getLocation()->getX() << "\n";
-					cout << "A";
-				}
-				else if(val == 0)
-					cout << " ";
-				else
-					cout << val;
+		Person *p = v->getPersonTest();
 
-				if(b && val == 3)
-					l = 100;
-				b = false;
-			}
-			cout << "\n";
-		}
+		cout << "--Generation : " << l << "\n";
+		cout << "Position : " << p->getGenomePosition() << "\n";
+		cout << "Alive : " << p->getAlive() << "\n";
+		cout << "Note : " << v->getBestNote() << "\n";
+		cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
+		cout << "X : " << p->getLocation()->getX() << "\n";
+		cout << "Y : " << p->getLocation()->getY() << "\n\n";
 
-		sleep(1);
 		v->generate();
+
+
+		// for(int i=0;i<m;++i){
+		// 	for(int j=0;j<n;++j){
+		// 		// for(unsigned int k=0;k<people.size() && !b;++k){
+		// 		// 	if(i == people.at(k)->getLocation()->getY() && j == people.at(k)->getLocation()->getX())
+		// 		// 		b = true;
+		// 		// }
+		// 		val = map->getPoints().at(i*n+j)->getValue();
+		// 		if(i == people.at(0)->getLocation()->getY() && j == people.at(0)->getLocation()->getX()){
+		// 			cout << people.at(0)->getLocation()->getX() << "\n";
+		// 			cout << "A";
+		// 		}
+		// 		else if(val == 0)
+		// 			cout << " ";
+		// 		else
+		// 			cout << val;
+
+		// 		if(b && val == 3)
+		// 			l = 100;
+		// 		b = false;
+		// 	}
+		// 	cout << "\n";
+		// }
+
+		// sleep(1);
 	}
 }
 
@@ -120,12 +132,14 @@ void drawmap(Village *v, int nbGeneration)
         window.clear();
         
         best = v->getPersonTest()->getGenome();
-
-		cout << "Position : " << v->getPersonTest()->getGenomePosition() << "\n";
-		cout << "Alive : " << v->getPersonTest()->getAlive() << "\n";
-		//cout << "Note : " << this->people.at(0).second << "\n";
-		cout << "X : " << v->getPersonTest()->getLocation()->getX() << "\n";
-		cout << "Y : " << v->getPersonTest()->getLocation()->getY() << "\n";
+  //       Person *p = v->getPersonTest();
+		// cout << "--Generation : " << k << "\n";
+		// cout << "Position : " << p->getGenomePosition() << "\n";
+		// cout << "Alive : " << p->getAlive() << "\n";
+		// cout << "Note : " << v->getBestNote() << "\n";
+		// cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
+		// cout << "X : " << p->getLocation()->getX() << "\n";
+		// cout << "Y : " << p->getLocation()->getY() << "\n\n";
 
         tmp_point = map->getStart();
         x = tmp_point->getX();
@@ -210,9 +224,9 @@ int main(int argc, char const *argv[])
 		cout << "Usage : ./Client <idvillage> <nbGeneration>" << endl;
 		return -1;
 	}
-	Village *v = new Village(atoi(argv[1]), 10);
+	Village *v = new Village(atoi(argv[1]), 100);
 	drawmap(v, atoi(argv[2]));
-	//showMap(v);
+	//showMap(v, atoi(argv[2]));
 	//struct population_struct pop = v->getPopulationStruct();
 	//struct population_struct new_pop = call_rpc(pop);
 	// v->setPopulationStruct(new_pop);

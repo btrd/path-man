@@ -26,6 +26,7 @@ public:
 	void reproduce();
 	void evaluate();
 	void kill();
+	int getBestNote();
 private:
 	int id;
 	int population;
