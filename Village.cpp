@@ -21,7 +21,7 @@ Map* Village::getMap(){
 
 Person* Village::getPersonTest(){
 	Person* p = this->people.at(0).first;
-	p->getGenome()->PrintGenome();
+	//p->getGenome()->PrintGenome();
 	return p;
 }
 
