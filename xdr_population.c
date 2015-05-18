@@ -1,7 +1,7 @@
 #include "include.h"
 
 bool_t xdr_adn(XDR *xdrs, struct adn_struct *adn) {
-  uint usize;
+  u_int usize;
   bool_t res = 1;
   if (xdr_int(xdrs, &adn->size) == 0) {
     res = 0;
@@ -21,7 +21,7 @@ bool_t xdr_adn(XDR *xdrs, struct adn_struct *adn) {
 }
 
 bool_t xdr_population(XDR *xdrs, struct population_struct *p) {
-  uint usize;
+  u_int usize;
   bool_t res = 1;
   if (xdr_int(xdrs, &p->size) == 0) {
     res = 0;

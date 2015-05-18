@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <sys/types.h>
 #include "population_struct.h"
 #define PROGNUM 0x20000100
 #define VERSNUM 1
