@@ -8,8 +8,6 @@
 
 using pathman::Adn;
 
-<<<<<<< HEAD
-
 void showMap(Village *v, int nb) {
 	Map *map = v->getMap();
 	map->display();
@@ -27,7 +25,7 @@ void showMap(Village *v, int nb) {
 		// cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
 		// cout << "X : " << p->getLocation()->getX() << "\n";
 		// cout << "Y : " << p->getLocation()->getY() << "\n\n";
-		sleep(0.9);
+		sleep(1);
 		v->generate();
 		if(p->getLocation()->distance(v->getMap()->getEnd()) == 0){
 			l = nb;
@@ -199,8 +197,8 @@ int main(int argc, char const *argv[])
   Village *v = new Village(atoi(argv[1]), 100);
   //drawmap(v, atoi(argv[2]));
   //showMap(v, atoi(argv[2]));
-  std::vector<Adn> adn_list = v->getAdnVector(50);
-  std::vector<Adn> new_adn_list = callRpc(adn_list);
-  v->setAdnVector(adn_list);
+  // std::vector<Adn> adn_list = v->getAdnVector(50);
+  // std::vector<Adn> new_adn_list = callRpc(adn_list);
+  // v->setAdnVector(adn_list);
   return 0;
 }
