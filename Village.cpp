@@ -1,15 +1,20 @@
 #include "Village.h"
 #include "population_struct.h"
 
-int SIZE_GENOME = 150;
-int SIZE_STEP = 1;
+int SIZE_GENOME = 200;
+int SIZE_STEP = 2;
 int MUTATION_CHANCE = 1;
+int SIZE_N = 100;
+int SIZE_M = 50;
+int HARDNESS = 3;
+int SEED = 12332;
 
 Village::Village(int id, int population)
 {
 	this->id = id;
 	this->population = population;
-	this->map = new Map();
+	//this->map = new Map();
+	this->map = new Map(SIZE_N, SIZE_M, SEED, HARDNESS);
 
 	for(int i=0;i<population;++i){
 		Genome *g;

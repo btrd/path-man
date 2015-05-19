@@ -6,61 +6,31 @@
 
 #include <SFML/Graphics.hpp>
 
-extern "C" struct population_struct call_rpc(struct population_struct);
+//extern "C" struct population_struct call_rpc(struct population_struct);
 
 void showMap(Village *v, int nb) {
-	//Map *map = v->getMap();
-	//map->display();
-
-	// Person *p = v->getPersonTest();
-	// cout << p->getLocation()->getX() << "\n";
-	// cout << p->getLocation()->getY() << "\n";
-	// vector<Person*> people = v->getPeople();
-	// int n = 100;
-	// int m = 50;
-	// bool b = false;
-	// int val;
+	Map *map = v->getMap();
+	map->display();
 
 	for(int l=0; l<nb;++l){
 		v->iterate();
 
 		Person *p = v->getPersonTest();
 
-		cout << "--Generation : " << l << "\n";
-		cout << "Position : " << p->getGenomePosition() << "\n";
-		cout << "Alive : " << p->getAlive() << "\n";
-		cout << "Note : " << v->getBestNote() << "\n";
-		cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
-		cout << "X : " << p->getLocation()->getX() << "\n";
-		cout << "Y : " << p->getLocation()->getY() << "\n\n";
-
+		map->displayWith(p->getLocation());
+		// cout << "--Generation : " << l << "\n";
+		// cout << "Position : " << p->getGenomePosition() << "\n";
+		// cout << "Alive : " << p->getAlive() << "\n";
+		// cout << "Note : " << v->getBestNote() << "\n";
+		// cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
+		// cout << "X : " << p->getLocation()->getX() << "\n";
+		// cout << "Y : " << p->getLocation()->getY() << "\n\n";
+		sleep(0.9);
 		v->generate();
-
-
-		// for(int i=0;i<m;++i){
-		// 	for(int j=0;j<n;++j){
-		// 		// for(unsigned int k=0;k<people.size() && !b;++k){
-		// 		// 	if(i == people.at(k)->getLocation()->getY() && j == people.at(k)->getLocation()->getX())
-		// 		// 		b = true;
-		// 		// }
-		// 		val = map->getPoints().at(i*n+j)->getValue();
-		// 		if(i == people.at(0)->getLocation()->getY() && j == people.at(0)->getLocation()->getX()){
-		// 			cout << people.at(0)->getLocation()->getX() << "\n";
-		// 			cout << "A";
-		// 		}
-		// 		else if(val == 0)
-		// 			cout << " ";
-		// 		else
-		// 			cout << val;
-
-		// 		if(b && val == 3)
-		// 			l = 100;
-		// 		b = false;
-		// 	}
-		// 	cout << "\n";
-		// }
-
-		// sleep(1);
+		if(p->getLocation()->distance(v->getMap()->getEnd()) == 0){
+			l = nb;
+			cout << "YEAH" << "\n";
+		}
 	}
 }
 

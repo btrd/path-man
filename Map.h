@@ -10,6 +10,7 @@
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h> 
 
 
 using namespace std;
@@ -24,6 +25,7 @@ class Map
 {
 public:
 	Map();
+	Map(int n, int m, int seed, int hardness);
 	~Map();
 
 	void display();
@@ -41,6 +43,10 @@ private:
 	Point *start;
 	Point *end;
 	vector<Point*> points;
+	int seed;
+	int hardness;
+
+	void addObstacle(int row, int size, int nb, int seed);
 };
 
 #endif

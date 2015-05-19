@@ -30,49 +30,110 @@ Map::Map()
 		}
 		map.close();
 	}
+}
 
-	// int seed = 1002;
-	// int val = 0;
-	// srand(seed++);
-	// int rd_start = rand()%(n*m);
-	// srand(seed++);
-	// int rd_end = rand()%(n*m);
-	// srand(seed++);
-	// int size = 5;
-	// int rd_x = rand()%n;
-	// int rd_y = rand()%m;
+Map::Map(int n, int m, int seed, int hardness): n(n), m(m), seed(seed), hardness(hardness)
+{
+	int val = 0;
+	srand(seed);
+	int start_x = 1+rand()%3;
+	int start_y = 1+rand()%(m-1);
+	srand(seed++);
+	int end_x = n-2 - rand()%3;
+	int end_y = 1+rand()%(m-1);
 
-	// cout << rd_start << " " << rd_end << "\n";
+	for(int y=0;y<m;++y){
+		for(int x=0;x<n;++x){
+			if(y == 0 || y == m-1 || x == 0 || x == n-1) // wall
+				val = 1;
+			else
+				val = 0;
 
-	// for(int i=0;i<m;++i){
-	// 	for(int j=0;j<n;++j){
-	// 		if(i == 0 || i == m-1 || j == 0 || j == n-1)
-	// 			val = 1;
-	// 		else
-	// 			val = 0;
-
-	// 		if(i == rd_y && j == rd_x){
-	// 			val = 1;
-	// 		}
-	// 		else if(i >= rd_y && i <= rd_y+size && j >= rd_x && j <= rd_x+size)
-	// 			val = 1;
-
-	// 		if(i*n+j == rd_start)
-	// 			val = 2;
-	// 		else if(i*n+j == rd_end)
-	// 			val = 3;
+			if(x == start_x && y == start_y) // start 
+				val = 2;
+			else if(x == end_x && y == end_y) // end
+				val = 3;
 
 
-	// 		Point *p = new Point(j,i,val);
-	// 		points.push_back(p);
-	// 	}
-	// }
+			Point *p = new Point(x,y,val);
+			if(val == 2)
+				this->start = p;
+			else if(val == 3)
+				this->end = p;
+			points.push_back(p);
+		}
+	}
+
+	for(int i=1; i<=(n/10)-2; ++i){
+		addObstacle(i*10, 6, hardness, seed+i);
+	}
+}
+
+void Map::addObstacle(int row, int size, int nb, int seed){
+	int ob_x = row+rand()%10;
+	for(int i=1; i<=nb;++i){
+		bool b = false;
+		bool c = false;
+		int j = 1;
+		int k = 0;
+		int ob_y = (i-1)*this->m/nb + rand()%(this->m/nb);
+		int r = rand()%4;
+		for(int y=0;y<m;++y){
+			for(int x=0;x<n;++x){
+				if(r == 0){ // square
+					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+size) )
+						this->points.at(y*n+x)->setValue(1);
+				}
+				else if(r == 1){ // triangle 
+					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+j) ){
+						this->points.at(y*n+x)->setValue(1);
+						b = true;
+					}
+				}
+				else if(r == 2){ // line
+					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x <= ob_x) )
+						this->points.at(y*n+x)->setValue(1);
+				}
+				else{ //circle
+					if( (y == ob_y && x == ob_x) 
+						|| (y >= ob_y && y < ob_y+size/2 && x >= ob_x && x <= ob_x+j) 
+						|| (y >= ob_y && y < ob_y+size/2 && x <= ob_x && x >= ob_x-j)
+						|| (y < ob_y+size && y >= ob_y+size/2 && x >= ob_x && x <= ob_x+k) 
+						|| (y < ob_y+size && y >= ob_y+size/2 && x <= ob_x && x >= ob_x-k)
+					){
+						this->points.at(y*n+x)->setValue(1);
+						if(y >= ob_y+size/2){
+							c = true;
+							b = false;
+						}
+						else
+							b=true;
+					}
+				}
+			}
+			if(b){
+				k=j;
+				j++;
+			}
+			if(c)
+				k--;
+		}
+	}
 }
 
 void Map::display(){
+	int val = 0;
 	for(int i=0;i<m;++i){
 		for(int j=0;j<n;++j){
-			cout << points.at(i*n+j)->getValue();
+			val = points.at(i*n+j)->getValue();
+			if(val == 0)
+				cout << " ";
+			else if(val == 2)
+				cout << "\033[32m2\033[0m";
+			else if(val == 3)
+				cout << "\033[34m3\033[0m";
+			else
+				cout << val;
 		}
 		cout << "\n";
 	}
@@ -138,12 +199,22 @@ Point* Map::change(Point* p, int direct, int steps){
 }
 
 void Map::displayWith(Point* p){
+	int y = p->getY();
+	int x = p->getX();
+	int val = 0;
 	for(int i=0;i<m;++i){
 		for(int j=0;j<n;++j){
-			if(i == p->getY() && j == p->getX())
-				cout << "*";
+			val = points.at(i*n+j)->getValue();
+			if(i == y && j == x)
+				cout << "\033[31m@\033[0m";
+			else if(val == 0)
+				cout << " ";
+			else if(val == 2)
+				cout << "\033[32m2\033[0m";
+			else if(val == 3)
+				cout << "\033[34m3\033[0m";
 			else
-				cout << points.at(i*n+j)->getValue();
+				cout << val;
 		}
 		cout << "\n";
 	}
@@ -156,10 +227,3 @@ vector<Point*> Map::getPoints(){
 Point* Map::getEnd(){
 	return this->end;
 }
-
-// int main(int argc, char const *argv[])
-// {
-// 	Map *m = new Map();
-// 	m->display();
-// 	return 0;
-// }

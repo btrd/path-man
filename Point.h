@@ -11,6 +11,7 @@ public:
 	int getValue();
 	int getY();
 	int getX();
+	void setValue(int v);
 
 private:
 	int x;

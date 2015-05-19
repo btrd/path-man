@@ -23,3 +23,7 @@ int Point::getX(){
 int Point::getY(){
 	return this->y;
 }
+
+void Point::setValue(int v){
+	this->value = v;
+}
