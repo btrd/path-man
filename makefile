@@ -1,28 +1,31 @@
-CC=gcc
-CXX=g++
-CFLAGS=-Wall -g -lrpcsvc -std=c99
-CXXFLAGS=-lsfml-graphics -lsfml-window -lsfml-system -Wall -g
-SOURCES=Map.cpp Point.cpp Person.cpp Village.cpp Genome.cpp Client.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXEC=Server Client
+CXX = g++
+CXXFLAGS += -std=c++11
 
-all : $(EXEC)
+LDFLAGS += -L/usr/local/lib -lgrpc++_unsecure -lgrpc -lgpr -lprotobuf -lpthread -ldl
+LDFLAGS += -lsfml-graphics -lsfml-window -lsfml-system -Wall
 
-Server : Server.o xdr_population.o
-	$(CC) -o $@ Server.o xdr_population.o
+SOURCES = adn_exchange.pb.o adn_exchange.grpc.pb.o Genome.o Map.o Person.o Point.o Village.o
+PROTOC = protoc
+GRPC_CPP_PLUGIN = grpc_cpp_plugin
+GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-Client : $(OBJECTS) callRpc.o
-	$(CXX) -o $@ $(OBJECTS) xdr_population.o callRpc.o $(CXXFLAGS)
+PROTOS_PATH = .
 
-xdr_population.o: xdr_population.c include.h
-	$(CC) -o $@ -c xdr_population.c -W -Wall -ansi -pedantic
+vpath %.proto $(PROTOS_PATH)
 
-callRpc.o: callRpc.c include.h
-	$(CC) -o $@ -c callRpc.c -W -Wall -ansi -pedantic
+all: Server Client
 
-%.o: %.cpp
-	$(CXX) -o $@ -c $< $(CXXFLAGS)
+Server: adn_exchange.pb.o adn_exchange.grpc.pb.o $(SOURCES) Server.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+Client: adn_exchange.pb.o adn_exchange.grpc.pb.o $(SOURCES) Client.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+	
+%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+
+%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean :
-	rm -f ${EXECUTABLE} *.o
-	rm -fr Server.dSYM
+	rm -f *.o *.pb.cc *.pb.h Server Client

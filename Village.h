@@ -6,7 +6,9 @@
 #include <math.h>
 #include "Person.h"
 #include "Map.h"
-#include "population_struct.h"
+#include "adn_exchange.grpc.pb.h"
+
+using pathman::Adn;
 
 static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pair<Person*, int>& secondElem);
 
@@ -21,8 +23,8 @@ public:
 	void generate();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
-	struct population_struct getPopulationStruct();
-	void setPopulationStruct(struct population_struct pop);
+  // std::vector<Adn> getAdnVector(int num);
+  // void setAdnVector(std::vector<Adn> adn_list);
 	void reproduce();
 	void evaluate();
 	void kill();

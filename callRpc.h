@@ -1,8 +1,10 @@
-#ifndef H_GL_CALLRPC
-#define H_GL_CALLRPC
+#ifndef CALLRPC_H
+#define CALLRPC_H
 
-#include "include.h"
-extern "C" struct population_struct call_rpc(struct population_struct p);
+#include "adn_exchange.grpc.pb.h"
+using pathman::Adn;
+
+std::vector<Adn> callRpc(std::vector<Adn> client_adn);
 
 #endif
   
