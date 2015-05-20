@@ -80,21 +80,21 @@ void Map::addObstacle(int row, int size, int nb, int seed){
 		int r = rand()%4;
 		for(int y=0;y<m;++y){
 			for(int x=0;x<n;++x){
-				if(r == 0){ // square
-					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+size) )
-						this->points.at(y*n+x)->setValue(1);
-				}
-				else if(r == 1){ // triangle 
-					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+j) ){
-						this->points.at(y*n+x)->setValue(1);
-						b = true;
-					}
-				}
-				else if(r == 2){ // line
-					if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x <= ob_x) )
-						this->points.at(y*n+x)->setValue(1);
-				}
-				else{ //circle
+				// if(r == 0){ // square
+				// 	if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+size) )
+				// 		this->points.at(y*n+x)->setValue(1);
+				// }
+				// else if(r == 1){ // triangle 
+				// 	if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x < ob_x+j) ){
+				// 		this->points.at(y*n+x)->setValue(1);
+				// 		b = true;
+				// 	}
+				// }
+				// else if(r == 2){ // line
+				// 	if( (y == ob_y && x == ob_x) || (y >= ob_y && y < ob_y+size && x >= ob_x && x <= ob_x) )
+				// 		this->points.at(y*n+x)->setValue(1);
+				// }
+				// else{ //circle
 					if( (y == ob_y && x == ob_x) 
 						|| (y >= ob_y && y < ob_y+size/2 && x >= ob_x && x <= ob_x+j) 
 						|| (y >= ob_y && y < ob_y+size/2 && x <= ob_x && x >= ob_x-j)
@@ -109,7 +109,7 @@ void Map::addObstacle(int row, int size, int nb, int seed){
 						else
 							b=true;
 					}
-				}
+				//}
 			}
 			if(b){
 				k=j;
@@ -196,6 +196,86 @@ Point* Map::change(Point* p, int direct, int steps){
 	}
 
 	return res;
+}
+
+vector<pair<int, int> > Map::getPath(Genome *g){
+	vector<Gene> adn = g->getAdn();
+	vector<pair<int, int> > res;
+	int x = start->getX();
+	int y = start->getY();
+	bool c = true;
+
+	cout << adn.size() << std::endl;
+	for(int i=0;i<adn.size() && c;i++){
+		for(int j=0;j<adn.at(i).steps && c;j++){
+			switch(adn.at(i).direct)
+			{
+				case NORTH:
+					--y;
+					break;
+				case NORTH_EAST:
+					--y;
+					++x;
+					break;
+				case EAST:
+					++x;
+					break;
+				case SOUTH_EAST:
+					++y;
+					++x;
+					break;
+				case SOUTH:
+					++y;
+					break;
+				case SOUTH_WEST:
+					++y;
+					--x;
+					break;
+				case WEST:
+					--x;
+					break;
+				case NORTH_WEST:
+					--y;
+					--x;
+					break;
+			}
+			res.push_back(make_pair(x, y));
+			if(this->points.at(x+y*n)->getValue() == 1 || this->points.at(x+y*n)->getValue() == 3){
+				c = false;
+			}
+		}
+	}
+
+	return res;
+}
+
+void Map::displayWithPath(Genome *g){
+	vector<pair<int, int> > path = getPath(g);
+	int val = 0;
+	bool flag = false;
+	for(int i=0;i<m;++i){
+		for(int j=0;j<n;++j){
+			val = points.at(i*n+j)->getValue();
+			for(int k=0;k<path.size() && !flag;++k){
+				if(i == path.at(k).second && j == path.at(k).first){
+					cout << "\033[31mo\033[0m";
+					flag = true;
+				}
+			}
+			if(!flag){
+				if(val == 0)
+					cout << " ";
+				else if(val == 2)
+					cout << "\033[32m2\033[0m";
+				else if(val == 3)
+					cout << "\033[34m3\033[0m";
+				else
+					cout << val;
+			}
+			flag = false;
+		}
+		cout << "\n";
+	}
 }
 
 void Map::displayWith(Point* p){

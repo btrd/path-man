@@ -5,8 +5,8 @@ int SIZE_STEP = 2;
 int MUTATION_CHANCE = 1;
 int SIZE_N = 100;
 int SIZE_M = 50;
-int HARDNESS = 3;
-int SEED = 12332;
+int HARDNESS = 4;
+int SEED = 1232;
 
 Village::Village(int id, int population)
 {

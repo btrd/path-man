@@ -2,6 +2,8 @@
 #include "callRpc.h"
 #include "Genome.h"
 #include <unistd.h>
+#include <chrono>
+#include <thread>
 
 #include <SFML/Graphics.hpp>
 
@@ -19,7 +21,7 @@ void showMap(Village *v, int nb) {
 
 		Person *p = v->getPersonTest();
 
-		map->displayWith(p->getLocation());
+		map->displayWithPath(p->getGenome());
 		// cout << "--Generation : " << l << "\n";
 		// cout << "Position : " << p->getGenomePosition() << "\n";
 		// cout << "Alive : " << p->getAlive() << "\n";
@@ -27,12 +29,13 @@ void showMap(Village *v, int nb) {
 		// cout << "Distance to end : " << p->getLocation()->distance(v->getMap()->getEnd()) << "\n";
 		// cout << "X : " << p->getLocation()->getX() << "\n";
 		// cout << "Y : " << p->getLocation()->getY() << "\n\n";
-		sleep(1);
+    cout << "Generation : " << l << "\n";
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 		v->generate();
-		if(p->getLocation()->distance(v->getMap()->getEnd()) == 0){
-			l = nb;
-			cout << "YEAH" << "\n";
-		}
+		//if(p->getLocation()->distance(v->getMap()->getEnd()) == 0){
+		//	l = nb;
+		//	cout << "YEAH" << "\n";
+		//}
 	}
 }
 

@@ -34,8 +34,10 @@ public:
 	Point* change(Point* p, int direct, int steps);
 	int getn();
 	int getm();
+	void displayWithPath(Genome *g);
 	void displayWith(Point* p);
 	vector<Point*> getPoints();
+	vector<pair<int, int> > getPath(Genome *g);
 
 private:
 	int n;
