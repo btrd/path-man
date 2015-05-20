@@ -6,7 +6,9 @@
 
 #include <SFML/Graphics.hpp>
 
-using pathman::Adn;
+using pathman::VillageP;
+using pathman::PersonP;
+using pathman::GeneP;
 
 void showMap(Village *v, int nb) {
 	Map *map = v->getMap();

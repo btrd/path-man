@@ -16,58 +16,42 @@ using grpc::ServerReader;
 using grpc::ServerReaderWriter;
 using grpc::ServerWriter;
 using grpc::Status;
-using pathman::Adn;
-
-class Population {
- public:
-  Population(std::vector<Adn> list) {
-    adn_list = list;
-    id = list[0].id_village();
-  }
-  std::vector<Adn> adn_list;
-  int id;
-};
+using pathman::VillageP;
+using pathman::PersonP;
+using pathman::GeneP;
 
 class AdnExchangeImpl final : public pathman::AdnExchange::Service {
  public:
   explicit AdnExchangeImpl() {
   }
 
-  Status Shuffle(ServerContext* context, ServerReaderWriter<Adn, Adn>* stream) override {
-    std::vector<Adn> received_adn;
-    Adn a;
-    while (stream->Read(&a)) {
-      received_adn.push_back(a);
-    }
-    std::vector<Adn> send_adn = getNextPop(received_adn);
-    for (const Adn& a2 : send_adn) {
-      stream->Write(a2);
-    }
+  Status Shuffle(ServerContext* context, const VillageP* vil_client,
+                    VillageP* vil_server) override {
+    vil_server = getNextVil(*vil_client);
     return Status::OK;
   }
 
  private:
-  std::vector<Adn> getNextPop(std::vector<Adn> received_adn) {
-    Population received_pop(received_adn);
+  VillageP* getNextVil(VillageP vil_client) {
 
     int res = -1;
-    for (int i = 0; i < population_list.size(); ++i) {
-      if (population_list.at(i).id == received_pop.id) {
+    for (int i = 0; i < village_list.size(); ++i) {
+      if (village_list.at(i).id() == vil_client.id()) {
         res = i+1;
-        population_list.at(i) = received_pop;
+        village_list.at(i) = vil_client;
       }
     }
-    if(res == population_list.size()){
+    if(res == village_list.size()){
       res = 0;
     }
     if (res == -1) {
-      population_list.push_back(received_pop);
+      village_list.push_back(vil_client);
       res = 0;
     }
-    return population_list.at(res).adn_list;
+    return &village_list.at(res);
   }
 
-  std::vector<Population> population_list;
+  std::vector<VillageP> village_list;
 };
 
 void RunServer() {

@@ -15,50 +15,31 @@ using grpc::ClientReader;
 using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
-using pathman::Adn;
+using pathman::VillageP;
+using pathman::PersonP;
+using pathman::GeneP;
 
 class AdnExchangeClient {
  public:
-  AdnExchangeClient(std::shared_ptr<ChannelInterface> channel, std::vector<Adn> client_adn) : stub_(RouteGuide::NewStub(channel)) {
-    adn_list = client_adn;
+  AdnExchangeClient(std::shared_ptr<ChannelInterface> channel) : stub_(AdnExchange::NewStub(channel)) {
   }
 
-  std::vector<Adn> Shuffle() {
+  VillageP Shuffle(VillageP vil_client) {
     ClientContext context;
-
-    std::shared_ptr<ClientReaderWriter<Adn, Adn> > stream(stub_->Shuffle(&context));
-
-    std::thread writer([stream]() {
-      for (const Adn& a : adn_list) {
-        std::cout << "Sending adn " << a.id_village() 
-                  << " direct " << a.direct()
-                  << " steps " << a.steps()
-                  << std::endl;
-        stream->Write(a);
-      }
-      stream->WritesDone();
-    });
-
-    std::vector<Adn> received_adn;
-    Adn server_adn;
-    while (stream->Read(&server_adn)) {
-      received_adn.push_back(server_adn);
-    }
-    writer.join();
-    Status status = stream->Finish();
+    VillageP vil_server;
+    Status status = stub_->GetFeature(&context, vil_client, vil_server);
     if (!status.IsOk()) {
-      std::cout << "Shuffle rpc failed." << std::endl;
+      std::cout << "GetFeature rpc failed." << std::endl;
     }
-    return received_adn;
+    return vil_server;
   }
 
  private:
-  std::vector<Adn> adn_list;
+  std::unique_ptr<AdnExchange::Stub> stub_;
 };
 
-std::vector<Adn> callRpc(std::vector<Adn> client_adn) {
-  AdnExchangeClient guide(grpc::CreateChannel("localhost:50051", grpc::InsecureCredentials(),ChannelArguments()), client_adn);
-  std::vector<Adn> server_adn = guide.Shuffle();
-
-  return server_adn;
+VillageP callRpc(VillageP vil_client) {
+  AdnExchangeClient guide(grpc::CreateChannel("localhost:50051", grpc::InsecureCredentials(),ChannelArguments()));
+  VillageP vil_server = guide.Shuffle(vil_client);
+  return vil_server;
 }

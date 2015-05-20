@@ -3,11 +3,19 @@ syntax = "proto3";
 package pathman;
 
 service AdnExchange {
-  rpc Shuffle(stream Adn) returns (stream Adn) {}
+  rpc Shuffle(VillageP) returns (VillageP) {}
 }
 
-message Adn {
+message VillageP {
+  int32 id = 1;
+  repeated PersonP population = 2;
+}
+
+message PersonP {
+  repeated GeneP adn = 1;
+}
+
+message GeneP {
   int32 direct = 1;
-  repeated int32 steps = 2;
-  int32 id_village = 3;
+  int32 steps = 2;
 }

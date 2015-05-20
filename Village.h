@@ -8,7 +8,9 @@
 #include "Map.h"
 #include "adn_exchange.grpc.pb.h"
 
-using pathman::Adn;
+using pathman::VillageP;
+using pathman::PersonP;
+using pathman::GeneP;
 
 static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pair<Person*, int>& secondElem);
 

@@ -2,9 +2,11 @@
 #define CALLRPC_H
 
 #include "adn_exchange.grpc.pb.h"
-using pathman::Adn;
+using pathman::VillageP;
+using pathman::PersonP;
+using pathman::GeneP;
 
-std::vector<Adn> callRpc(std::vector<Adn> client_adn);
+VillageP callRpc(VillageP vil_client);
 
 #endif
   
