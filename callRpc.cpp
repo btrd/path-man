@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <grpc/grpc.h>
 #include <grpc++/channel_arguments.h>
 #include <grpc++/channel_interface.h>
@@ -21,21 +23,21 @@ using pathman::GeneP;
 
 class AdnExchangeClient {
  public:
-  AdnExchangeClient(std::shared_ptr<ChannelInterface> channel) : stub_(AdnExchange::NewStub(channel)) {
+  AdnExchangeClient(std::shared_ptr<ChannelInterface> channel) : stub_(pathman::AdnExchange::NewStub(channel)) {
   }
 
   VillageP Shuffle(VillageP vil_client) {
     ClientContext context;
-    VillageP vil_server;
-    Status status = stub_->GetFeature(&context, vil_client, vil_server);
+    VillageP* vil_server;
+    Status status = stub_->Shuffle(&context, vil_client, vil_server);
     if (!status.IsOk()) {
-      std::cout << "GetFeature rpc failed." << std::endl;
+      std::cout << "Shuffle rpc failed." << std::endl;
     }
-    return vil_server;
+    return *vil_server;
   }
 
  private:
-  std::unique_ptr<AdnExchange::Stub> stub_;
+  std::unique_ptr<pathman::AdnExchange::Stub> stub_;
 };
 
 VillageP callRpc(VillageP vil_client) {

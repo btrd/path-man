@@ -2,10 +2,10 @@
 #include "callRpc.h"
 #include "Genome.h"
 #include <unistd.h>
-#include "adn_exchange.grpc.pb.h"
 
 #include <SFML/Graphics.hpp>
 
+#include "adn_exchange.grpc.pb.h"
 using pathman::VillageP;
 using pathman::PersonP;
 using pathman::GeneP;
@@ -191,16 +191,16 @@ void drawmap(Village *v, int nbGeneration)
 
 int main(int argc, char const *argv[])
 {
-  if (argc != 3)
+  if (argc != 4)
   {
-    cout << "Usage : ./Client <idvillage> <nbGeneration>" << endl;
+    cout << "Usage : ./Client <idvillage> <population> <nbGeneration>" << endl;
     return -1;
   }
-  Village *v = new Village(atoi(argv[1]), 100);
-  //drawmap(v, atoi(argv[2]));
-  //showMap(v, atoi(argv[2]));
-  // std::vector<Adn> adn_list = v->getAdnVector(50);
-  // std::vector<Adn> new_adn_list = callRpc(adn_list);
-  // v->setAdnVector(adn_list);
+  Village *v = new Village(atoi(argv[1]), atoi(argv[2]));
+  //drawmap(v, atoi(argv[3]));
+  //showMap(v, atoi(argv[3]));
+  VillageP vil = v->getVillageP(atoi(argv[2])/2);
+  VillageP new_vil = callRpc(vil);
+  v->setVillageP(new_vil);
   return 0;
 }

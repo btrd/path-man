@@ -4,7 +4,7 @@ CXXFLAGS += -std=c++11
 LDFLAGS += -L/usr/local/lib -lgrpc++_unsecure -lgrpc -lgpr -lprotobuf -lpthread -ldl
 LDFLAGS += -lsfml-graphics -lsfml-window -lsfml-system -Wall
 
-SOURCES = adn_exchange.pb.o adn_exchange.grpc.pb.o Genome.o Map.o Person.o Point.o Village.o
+SOURCES = adn_exchange.pb.o adn_exchange.grpc.pb.o callRpc.o Genome.o Map.o Person.o Point.o Village.o
 PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
