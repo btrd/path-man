@@ -1,3 +1,8 @@
+Client
+Server
+*.pb.h
+
+
 ###############_C++_################
 # Compiled Object files
 *.slo
@@ -54,7 +59,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
-Client
-Server
-Server.dSYM
