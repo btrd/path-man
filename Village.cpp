@@ -63,37 +63,34 @@ void Village::generate(){
 	reproduce();
 }
 
-// std::vector<Adn> Village::getAdnVector(int num) {
-// 	std::vector<Adn> res;
-//  	srand(time(NULL));
-// 	for(int i = 0; i < num; i++) {
-// 		int r = rand()%this->population-1;
-// 		vector<Gene> adn = this->people.at(r).first->getGenome()->getAdn();
+VillageP Village::getVillageP(int num) {
+	VillageP res;
+	res.set_id(this->id);
+ 	srand(time(NULL));
+	for(int i = 0; i < num; i++) {
+		int r = rand()%this->population-1;
+		vector<Gene> adn = this->people.at(r).first->getGenome()->getAdn();
+		PersonP* p = res.add_population();
+		int size = adn.size();
+		for(int j = 0; j < size; j++) {
+    	GeneP* g = p->add_adn();
+      g->set_direct(adn[j].direct);
+      g->set_steps(adn[j].steps);
+		}
+		this->people.erase(this->people.begin() + r);
+		this->population--;
+	}
+	return res;
+}
 
-// 		int size = adn.size();
-// 		for(int j = 0; j < size; j++) {
-// 			Adn a;
-// 			a.set_id_village(this->id);
-// 			a.set_id(i); 
-//       a.set_direct(adn[j].direct);
-//       a.set_steps(adn[j].steps);
-//       res.push_back(a);
-// 		}
-
-// 		this->people.erase(this->people.begin() + r);
-// 		this->population--;
-// 	}
-// 	return res;
-// }
-
-// void Village::setAdnVector(std::vector<Adn> adn_vector){
-// 	for(int i = 0; i < adn_vector.size(); i++){
-// 		Genome *g = new Genome(SIZE_GENOME, SIZE_STEP, MUTATION_CHANCE, pop.tab[i].tab);
-// 		Person *p = new Person(this->population, g, this->map->getStart());
-// 		this->people.push_back(make_pair(p,0));
-// 		this->population++;
-// 	}
-// }
+void Village::setVillageP(VillageP vil){
+	for(int i = 0; i < vil.population_size(); i++){
+		Genome *g = new Genome(SIZE_GENOME, SIZE_STEP, MUTATION_CHANCE, vil.population(i));
+		Person *p = new Person(this->population, g, this->map->getStart());
+		this->people.push_back(make_pair(p,0));
+		this->population++;
+	}
+}
 
 void Village::reproduce(){
 	int pop = this->population;

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include "adn_exchange.grpc.pb.h"
 
 /*
 	Class handling the differents ADN and reproduction
@@ -29,7 +30,8 @@ public:
 	Genome();
 	Genome(int size, int maxsteps, int mutationchance);
 	Genome(int size, int maxsteps, int mutationchance, int direction); //Go in one direction only
-	Genome(int size, int maxsteps, int mutationchance, int * tab); //New Genome from RPC
+	Genome(int size, int maxsteps, int mutationchance, int * tab); //Old Genome from RPC
+	Genome(int size, int maxsteps, int mutationchance, pathman::PersonP person); //New Genome from RPC
 	~Genome();
 
 	int getSize();

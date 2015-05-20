@@ -25,8 +25,8 @@ public:
 	void generate();
 	Person* getPersonTest();
 	vector<Person*> getPeople();
-  // std::vector<Adn> getAdnVector(int num);
-  // void setAdnVector(std::vector<Adn> adn_list);
+  VillageP getVillageP(int num);
+  void setVillageP(VillageP vil);
 	void reproduce();
 	void evaluate();
 	void kill();
