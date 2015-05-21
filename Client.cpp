@@ -157,16 +157,16 @@ void drawmap(Village *v, int nbGeneration)
           break;
         }
         if (x <= 0 || y <= 0 || x >= m || y >= n
-            || points.at(y * n + x)->getValue() == 1 //hit a wall
-            || points.at(y * n + x)->getValue() == 3) //ended
+            || points.at(y * m + x)->getValue() == 1 //hit a wall
+            || points.at(y * m + x)->getValue() == 3) //ended
         {
           i = best->getSize();
           break;
         }
-        pixels.at(y * n + x).setFillColor(sf::Color::Magenta);
+        pixels.at(y * m + x).setFillColor(sf::Color::Magenta);
       }
     }
-    pixels.at(y * n + x).setFillColor(sf::Color::Black);
+    pixels.at(y * m + x).setFillColor(sf::Color::Black);
 
     for (i = 0; i < n; i++) //draw map
     {
