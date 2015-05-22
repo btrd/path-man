@@ -25,7 +25,9 @@ Installation des librairies (sous ubuntu) :
 
 
 Client :
-	Usage : ./Client <serveur> <idvillage> <population> <nbGeneration>
+	Usage : ./Client <serveur> <idvillage> <population> <nbGeneration> <seed>
+
+	Exemple : ./Client 127.0.0.1 1 100 100 12345
 
 Server :
 	Usage : ./Server

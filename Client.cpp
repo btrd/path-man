@@ -213,12 +213,12 @@ void drawmap(Village *v, int nbGeneration, std::string host)
 
 int main(int argc, char const *argv[])
 {
-  if (argc != 5)
+  if (argc != 6)
   {
-    cout << "Usage : ./Client <serveur> <idvillage> <population> <nbGeneration>" << endl;
+    cout << "Usage : ./Client <serveur> <idvillage> <population> <nbGeneration> <seed>" << endl;
     return -1;
   }
-  Village *v = new Village(atoi(argv[2]), atoi(argv[3]));
+  Village *v = new Village(atoi(argv[2]), atoi(argv[3]), atoi(argv[5]));
   drawmap(v, atoi(argv[4]), argv[1]);
   //showMap(v, atoi(argv[3]));
   return 0;

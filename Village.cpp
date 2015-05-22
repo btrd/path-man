@@ -6,10 +6,11 @@ int MUTATION_CHANCE = 1;
 int SIZE_N = 100;
 int SIZE_M = 50;
 int HARDNESS = 3;
-int SEED = 13337;
+int SEED = 0;
 
-Village::Village(int id, int population)
+Village::Village(int id, int population, int seed)
 {
+	SEED = seed;
 	this->id = id;
 	this->population = population;
 	this->map = new Map(SIZE_N, SIZE_M, SEED, HARDNESS);

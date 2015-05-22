@@ -17,7 +17,7 @@ static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pai
 class Village
 {
 public:
-	Village(int id, int population);
+	Village(int id, int population, int seed);
 	~Village();
 
 	Map* getMap();
