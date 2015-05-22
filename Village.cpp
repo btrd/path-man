@@ -122,7 +122,7 @@ void Village::evaluate(){
 	Person *p;
 	for(int i=0;i<this->population;++i){
 		p = this->people.at(i).first;
-		note = -p->getLocation()->distance(this->map->getEnd()) + (1000 * p->getArrived()) - (p->getGenomePosition() * p->getArrived());
+		note = -p->getLocation()->distance(this->map->getEnd()) + ((SIZE_GENOME*2) * p->getArrived()) - (p->getGenomePosition() * p->getArrived());
 		//p->reset(this->map); 
 		this->people.at(i).second = note;
 		//cout << note << "\n";
