@@ -6,7 +6,7 @@ using pathman::VillageP;
 using pathman::PersonP;
 using pathman::GeneP;
 
-VillageP callRpc(VillageP vil_client);
+VillageP callRpc(std::string server, VillageP vil_client);
 
 #endif
   
