@@ -52,7 +52,7 @@ void drawmap(Village *v, int nbGeneration, std::string host)
   Point * tmp_point;
   Genome * best;
   Gene gene;
-  sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Map Rendering Test");
+  sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Path-man");
 
   for (k = 0; k < nbGeneration; k++) //Start new Generation
   {
