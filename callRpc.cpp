@@ -40,8 +40,8 @@ class AdnExchangeClient {
   std::unique_ptr<pathman::AdnExchange::Stub> stub_;
 };
 
-VillageP callRpc(VillageP vil_client) {
-  AdnExchangeClient guide(grpc::CreateChannel("localhost:50051", grpc::InsecureCredentials(),ChannelArguments()));
+VillageP callRpc(std::string server, VillageP vil_client) {
+  AdnExchangeClient guide(grpc::CreateChannel(server + ":50051", grpc::InsecureCredentials(),ChannelArguments()));
   VillageP vil_server = guide.Shuffle(vil_client);
   return vil_server;
 }

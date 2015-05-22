@@ -39,10 +39,10 @@ void showMap(Village *v, int nb) {
 	}
 }
 
-void drawmap(Village *v, int nbGeneration)
+void drawmap(Village *v, int nbGeneration, std::string host)
 {
   int i, j, k;
-  int TILE_SIZE = 15;
+  int TILE_SIZE = 10;
   Map *map = v->getMap();
   int m = map->getm();
   int n = map->getn();
@@ -52,12 +52,18 @@ void drawmap(Village *v, int nbGeneration)
   Point * tmp_point;
   Genome * best;
   Gene gene;
-  sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Map Rendering Test");
+  sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Path-man");
 
   for (k = 0; k < nbGeneration; k++) //Start new Generation
   {
+    // if (k % (nbGeneration/10) == 0)
+    // {
+    //   VillageP vil = v->getVillageP(v->getPopulation()/2);
+    //   VillageP new_vil = callRpc(host, vil);
+    //   v->setVillageP(new_vil);
+    // }
     srand(time(NULL) + k);
-    cout << "Generation num : " << k << endl;
+    //cout << "Generation num : " << k << endl;
     v->iterate();
     //Close Event
     sf::Event event;
@@ -120,7 +126,7 @@ void drawmap(Village *v, int nbGeneration)
     x = tmp_point->getX();
     y = tmp_point->getY();
 
-    for (i = 0; i < best->getSize() - 1; i++)
+    for (i = 0; i < best->getSize()-1; i++)
     {
       gene = best->getAdn().at(i);
       for (j = 0; j < gene.steps; j++)
@@ -156,17 +162,17 @@ void drawmap(Village *v, int nbGeneration)
           --x;
           break;
         }
-        if (x <= 0 || y <= 0 || x >= m || y >= n
-            || points.at(y * m + x)->getValue() == 1 //hit a wall
-            || points.at(y * m + x)->getValue() == 3) //ended
+        if (x <= 0 || y <= 0 || x >= n || y >= m
+            || points.at(y * n + x)->getValue() == 1 //hit a wall
+            || points.at(y * n + x)->getValue() == 3) //ended
         {
           i = best->getSize();
           break;
         }
-        pixels.at(y * m + x).setFillColor(sf::Color::Magenta);
+        pixels.at(y * n + x).setFillColor(sf::Color::Magenta);
       }
     }
-    pixels.at(y * m + x).setFillColor(sf::Color::Black);
+    pixels.at(y * n + x).setFillColor(sf::Color::Black);
 
     for (i = 0; i < n; i++) //draw map
     {
@@ -175,6 +181,19 @@ void drawmap(Village *v, int nbGeneration)
         window.draw(pixels.at(i * m + j));
       }
     }
+    sf::Font font;
+    if (!font.loadFromFile("font.ttf"))
+    {
+        // Error...
+    }
+    sf::Text text;
+    text.setFont(font); // font is a sf::Font
+    text.setString(" Generation " + std::to_string(k));
+    text.setCharacterSize(30); // in pixels, not points!
+    text.setColor(sf::Color::Black);
+    // inside the main loop, between window.clear() and window.display()
+    window.draw(text);
+
     window.display();
 
     //----------End Redraw
@@ -194,16 +213,13 @@ void drawmap(Village *v, int nbGeneration)
 
 int main(int argc, char const *argv[])
 {
-  if (argc != 4)
+  if (argc != 5)
   {
-    cout << "Usage : ./Client <idvillage> <population> <nbGeneration>" << endl;
+    cout << "Usage : ./Client <serveur> <idvillage> <population> <nbGeneration>" << endl;
     return -1;
   }
-  Village *v = new Village(atoi(argv[1]), atoi(argv[2]));
-  //drawmap(v, atoi(argv[3]));
+  Village *v = new Village(atoi(argv[2]), atoi(argv[3]));
+  drawmap(v, atoi(argv[4]), argv[1]);
   //showMap(v, atoi(argv[3]));
-  VillageP vil = v->getVillageP(atoi(argv[2])/2);
-  VillageP new_vil = callRpc(vil);
-  v->setVillageP(new_vil);
   return 0;
 }
