@@ -1,10 +1,13 @@
-Installation des librairies (sous ubuntu) :
+Installation des librairies
 
-	SFML pour l'affichage :
+	SFML http://sfml-dev.org
+		Debian
+			sudo apt-get install libsfml-dev
 
-		sudo apt-get install libsfml-dev
+		Mac OS
+			brew install sfml
 
-	Protobuf-cpp 3.0.0 alpha 2 (dépendance de GRpc) :
+	Protobuf (dépendance de GRpc) https://github.com/google/protobuf
 		
 		wget https://github.com/google/protobuf/releases/download/v3.0.0-alpha-2/protobuf-cpp-3.0.0-alpha-2.tar.gz
 		tar -xvzf protobuf-cpp-3.0.0-alpha-2.tar.gz 
@@ -14,20 +17,21 @@ Installation des librairies (sous ubuntu) :
 		sudo make install
 		sudo ldconfig
 
-	GRpc : 
+	gRpc https://github.com/grpc/grpc
 
-		sudo apt-get install build-essential autoconf libtool
  		git clone https://github.com/grpc/grpc.git
  		cd grpc/
 		git submodule update --init
 		make
 		sudo make install
 
+Client
+	Usage
+		./Client <serveur> <idvillage> <population> <nbGeneration> <seed>
 
-Client :
-	Usage : ./Client <serveur> <idvillage> <population> <nbGeneration> <seed>
+	Exemple
+		./Client localhost 1 100 1000 12345
 
-	Exemple : ./Client 127.0.0.1 1 100 100 12345
-
-Server :
-	Usage : ./Server
+Server
+	Usage
+		./Server

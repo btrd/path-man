@@ -186,6 +186,7 @@ void drawmap(Village *v, int nbGeneration, std::string host)
       }
     }
     text.setString(" Generation " + std::to_string(k));
+    text.setPosition(8, 8);
     window.draw(text);
 
     window.display();
@@ -194,6 +195,7 @@ void drawmap(Village *v, int nbGeneration, std::string host)
     v->generate();
   }
   //End Generation
+  text.setPosition(8, 35);
   text.setString(" Done");
   window.draw(text);
   window.display();
