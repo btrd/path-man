@@ -53,6 +53,12 @@ void drawmap(Village *v, int nbGeneration, std::string host)
   Genome * best;
   Gene gene;
   sf::RenderWindow window(sf::VideoMode(n * TILE_SIZE, m * TILE_SIZE), "Path-man");
+  sf::Font font;
+  font.loadFromFile("font.ttf");
+  sf::Text text;
+  text.setFont(font);
+  text.setCharacterSize(30);
+  text.setColor(sf::Color::Black);
 
   for (k = 0; k < nbGeneration; k++) //Start new Generation
   {
@@ -81,8 +87,6 @@ void drawmap(Village *v, int nbGeneration, std::string host)
       {
         sf::RectangleShape tile(sf::Vector2f(TILE_SIZE, TILE_SIZE));
         tile.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-        tile.setOutlineThickness(1);
-        tile.setOutlineColor(sf::Color(0, 0, 0));
 
         tmp_point = points.at(i * m + j);
 
@@ -181,25 +185,18 @@ void drawmap(Village *v, int nbGeneration, std::string host)
         window.draw(pixels.at(i * m + j));
       }
     }
-    sf::Font font;
-    if (!font.loadFromFile("font.ttf"))
-    {
-        // Error...
-    }
-    sf::Text text;
-    text.setFont(font); // font is a sf::Font
-    text.setString(" Generation " + std::to_string(k));
-    text.setCharacterSize(30); // in pixels, not points!
-    text.setColor(sf::Color::Black);
-    // inside the main loop, between window.clear() and window.display()
     window.draw(text);
 
     window.display();
 
     //----------End Redraw
     v->generate();
-  }//End Generation
-  cout << "Finished" << endl;
+    text.setString("");
+  }
+  //End Generation
+  text.setString(" Done");
+  window.draw(text);
+  window.display();
   while (window.isOpen()) //Boucle principale
   {
     sf::Event event;
