@@ -93,10 +93,10 @@ void drawmap(Village *v, int nbGeneration, std::string host)
         switch (tmp_point->getValue())
         {
         case 0: //normal
-          tile.setFillColor(sf::Color::Green);
+          tile.setFillColor(sf::Color::Color( 250, 218, 167));
           break;
         case 1: //Wall
-          tile.setFillColor(sf::Color::White);
+          tile.setFillColor(sf::Color::Color(10, 189, 0));
           break;
         case 2: //Start
           tile.setFillColor(sf::Color::Red);
@@ -104,8 +104,8 @@ void drawmap(Village *v, int nbGeneration, std::string host)
         case 3: //End
           tile.setFillColor(sf::Color::Blue);
           break;
-        default: //default (mmap invalid)é
-          tile.setFillColor(sf::Color::White);
+        default: //default (mmap invalidé)
+          tile.setFillColor(sf::Color::Color(10, 189, 0));
           break;
         }
         tile.setPosition(tmp_point->getX()*TILE_SIZE, tmp_point->getY()*TILE_SIZE);
@@ -173,10 +173,10 @@ void drawmap(Village *v, int nbGeneration, std::string host)
           i = best->getSize();
           break;
         }
-        pixels.at(y * n + x).setFillColor(sf::Color::Magenta);
+        pixels.at(y * n + x).setFillColor(sf::Color::Color(127, 127, 127));
       }
     }
-    pixels.at(y * n + x).setFillColor(sf::Color::Black);
+    pixels.at(y * n + x).setFillColor(sf::Color::Red);
 
     for (i = 0; i < n; i++) //draw map
     {
@@ -185,13 +185,13 @@ void drawmap(Village *v, int nbGeneration, std::string host)
         window.draw(pixels.at(i * m + j));
       }
     }
+    text.setString(" Generation " + std::to_string(k));
     window.draw(text);
 
     window.display();
 
     //----------End Redraw
     v->generate();
-    text.setString("");
   }
   //End Generation
   text.setString(" Done");
