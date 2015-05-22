@@ -5,8 +5,8 @@ int SIZE_STEP = 2;
 int MUTATION_CHANCE = 1;
 int SIZE_N = 100;
 int SIZE_M = 50;
-int HARDNESS = 4;
-int SEED = 1232;
+int HARDNESS = 3;
+int SEED = 13337;
 
 Village::Village(int id, int population)
 {
@@ -100,6 +100,7 @@ void Village::reproduce(){
 	//std::random_shuffle(this->people.begin(), this->people.end());
 	//cout << this->people.at(0).first->getId() << "\n";
 	Genome *g;
+	//cout << "r" << rand()%100 << std::endl;
 	for(int i=0;i<pop;i=i+2){
 		if(i%4 == 0)
 			g = Genome::ChildRandom(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome());
@@ -144,4 +145,12 @@ static bool pairCompare(const std::pair<Person*, int>& firstElem, const std::pai
 
 int Village::getBestNote(){
 	return this->people.at(0).second;
+}
+
+void Village::setPopulation(int pop){
+	this->population = pop;
+}
+
+int Village::getPopulation(){
+	return this->population;
 }

@@ -19,6 +19,7 @@ public:
 	int getGenomePosition();
 	void reset(Map* m);
 	int getId();
+	int getIteration();
 
 private:
 	int id;

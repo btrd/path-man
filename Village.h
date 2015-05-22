@@ -31,6 +31,8 @@ public:
 	void evaluate();
 	void kill();
 	int getBestNote();
+	void setPopulation(int pop);
+	int getPopulation();
 private:
 	int id;
 	int population;

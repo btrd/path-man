@@ -38,7 +38,8 @@ Map::Map(int n, int m, int seed, int hardness): n(n), m(m), seed(seed), hardness
 	srand(seed);
 	int start_x = 1+rand()%3;
 	int start_y = 1+rand()%(m-1);
-	srand(seed++);
+	seed*=2;
+	srand(seed);
 	int end_x = n-2 - rand()%3;
 	int end_y = 1+rand()%(m-1);
 
@@ -205,7 +206,6 @@ vector<pair<int, int> > Map::getPath(Genome *g){
 	int y = start->getY();
 	bool c = true;
 
-	cout << adn.size() << std::endl;
 	for(int i=0;i<adn.size() && c;i++){
 		for(int j=0;j<adn.at(i).steps && c;j++){
 			switch(adn.at(i).direct)

@@ -50,3 +50,7 @@ int Person::getId(){
 bool Person::getAlive(){
 	return this->alive;
 }
+
+int Person::getIteration(){
+	return this->iteration;
+}
