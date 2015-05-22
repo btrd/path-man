@@ -16,7 +16,7 @@ public:
 private:
 	int x;
 	int y;
-	int value; // 0 = normal, 1 = obstacle, 2 = door
+	int value; // 0 = normal, 1 = obstacle, 2 = start, 3 = end
 };
 
 #endif

@@ -12,7 +12,6 @@ Village::Village(int id, int population)
 {
 	this->id = id;
 	this->population = population;
-	//this->map = new Map();
 	this->map = new Map(SIZE_N, SIZE_M, SEED, HARDNESS);
 
 	for(int i=0;i<population;++i){
@@ -34,7 +33,6 @@ Map* Village::getMap(){
 
 Person* Village::getPersonTest(){
 	Person* p = this->people.at(0).first;
-	//p->getGenome()->PrintGenome();
 	return p;
 }
 
@@ -97,10 +95,7 @@ void Village::reproduce(){
 	srand(time(NULL));
 	int pt1 = rand()%SIZE_GENOME;
 	int pt2 = pt1+rand()%(SIZE_GENOME-pt1);
-	//std::random_shuffle(this->people.begin(), this->people.end());
-	//cout << this->people.at(0).first->getId() << "\n";
 	Genome *g;
-	//cout << "r" << rand()%100 << std::endl;
 	for(int i=0;i<pop;i=i+2){
 		if(i%4 == 0)
 			g = Genome::ChildRandom(this->people.at(rand()%pop).first->getGenome(), this->people.at(rand()%pop).first->getGenome());
@@ -123,9 +118,7 @@ void Village::evaluate(){
 	for(int i=0;i<this->population;++i){
 		p = this->people.at(i).first;
 		note = -p->getLocation()->distance(this->map->getEnd()) + ((SIZE_GENOME*2) * p->getArrived()) - (p->getGenomePosition() * p->getArrived());
-		//p->reset(this->map); 
 		this->people.at(i).second = note;
-		//cout << note << "\n";
 	}
 
 	std::sort(this->people.begin(), this->people.end(), pairCompare);
